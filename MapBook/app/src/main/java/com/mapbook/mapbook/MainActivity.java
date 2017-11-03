@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText editEmail;
     private EditText editPassword;
     private Button buttonSignIn;
+    private TextView viewSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editEmail = (EditText)findViewById(R.id.editTextEmail);
         editPassword = (EditText)findViewById(R.id.editTextPassword);
         buttonSignIn = (Button)findViewById(R.id.buttonSignIn);
+        viewSignUp = (TextView)findViewById(R.id.signUp);
+        viewSignUp.setOnClickListener(this);
 
         buttonSignIn.setOnClickListener(this);
     }
@@ -42,6 +46,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
+
+    public void goToSighUp() {
+        Intent intent = new Intent(this, SighUpActivity.class);
+        startActivity(intent);
+    }
+
 
     private void userLogIn(){
         String email = editEmail.getText().toString().trim();
@@ -53,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(MainActivity.this, "Authentication success.",
+                            Toast.makeText(MainActivity.this, "Authentication successful.",
                                     Toast.LENGTH_LONG).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             logIn();
@@ -80,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v == buttonSignIn){
             userLogIn();
+        }
+        if(v == viewSignUp){
+            goToSighUp();
         }
     }
 }
