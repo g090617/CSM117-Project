@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SighUpActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -23,12 +25,15 @@ public class SighUpActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editPassword;
     private Button buttonSignUp;
 
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sigh_up);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         editEmail = (EditText)findViewById(R.id.editTextSighUpEmail);
         editPassword = (EditText)findViewById(R.id.editTextSighUpPassword);
@@ -38,7 +43,7 @@ public class SighUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void userSignUp(){
-        String email = editEmail.getText().toString().trim();
+        final String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -51,6 +56,8 @@ public class SighUpActivity extends AppCompatActivity implements View.OnClickLis
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(SighUpActivity.this, "Authentication successful.",
                                     Toast.LENGTH_SHORT).show();
+
+                            writeNewUser(mAuth.getCurrentUser().getUid(), email);
                             goToSignIn();
 //                            updateUI(user);
                         } else {
@@ -76,6 +83,13 @@ public class SighUpActivity extends AppCompatActivity implements View.OnClickLis
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    private void writeNewUser(String userId, String email) {
+        User user = new User(userId, email);
+
+        mDatabase.child("users").child(userId).setValue(user);
+    }
+
     @Override
     public void onClick(View v) {
         if(v == buttonSignUp){
@@ -83,3 +97,4 @@ public class SighUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 }
+
