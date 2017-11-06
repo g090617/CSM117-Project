@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -26,12 +28,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonSignIn;
     private TextView viewSignUp;
 
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         editEmail = (EditText)findViewById(R.id.editTextEmail);
         editPassword = (EditText)findViewById(R.id.editTextPassword);
@@ -52,9 +57,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
+    private void writeNewBook(String userId, String email, String title, String author,
+                              String isbn, String publisher,
+                              String subject, String price, String status) {
+        User user = new User(userId, email);
+//        user.addBookToUser(title, author, isbn, publisher,
+//                subject, price, status);
+
+        mDatabase.child("users").child(userId).setValue(user);
+    }
+
+    private void writeNewUser(String userId, String email) {
+        User user = new User(userId, email);
+
+        mDatabase.child("users").child(userId).setValue(user);
+    }
 
     private void userLogIn(){
-        String email = editEmail.getText().toString().trim();
+        final String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -66,6 +86,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Toast.makeText(MainActivity.this, "Authentication successful.",
                                     Toast.LENGTH_LONG).show();
                             FirebaseUser user = mAuth.getCurrentUser();
+//                            writeNewBook(mAuth.getCurrentUser().getUid(), email,
+//                                    "War and Peace", "Tolsto", "99877",
+//                                    "Princeton", "English", "50","BUY");
+                            writeNewUser(mAuth.getCurrentUser().getUid(), email);
                             logIn();
 //                            updateUI(user);
                         } else {
