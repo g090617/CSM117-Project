@@ -57,6 +57,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
+    private void writeNewBook(String userId, String email, String title, String author,
+                              String isbn, String publisher,
+                              String subject, String price, String status) {
+        User user = new User(userId, email);
+//        user.addBookToUser(title, author, isbn, publisher,
+//                subject, price, status);
+
+        mDatabase.child("users").child(userId).setValue(user);
+    }
+
     private void writeNewUser(String userId, String email) {
         User user = new User(userId, email);
 
@@ -76,6 +86,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Toast.makeText(MainActivity.this, "Authentication successful.",
                                     Toast.LENGTH_LONG).show();
                             FirebaseUser user = mAuth.getCurrentUser();
+//                            writeNewBook(mAuth.getCurrentUser().getUid(), email,
+//                                    "War and Peace", "Tolsto", "99877",
+//                                    "Princeton", "English", "50","BUY");
+                            writeNewUser(mAuth.getCurrentUser().getUid(), email);
                             logIn();
 //                            updateUI(user);
                         } else {
