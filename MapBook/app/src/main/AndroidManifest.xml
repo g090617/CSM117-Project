@@ -33,7 +33,11 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".SighUpActivity"></activity>
+        <activity android:name=".SighUpActivity" />
+        <activity
+            android:name=".MainNavigation"
+            android:label="@string/title_activity_main_navigation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

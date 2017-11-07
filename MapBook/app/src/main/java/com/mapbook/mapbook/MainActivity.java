@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void logIn() {
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, MainNavigation.class);
         startActivity(intent);
     }
 
