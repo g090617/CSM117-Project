@@ -8,8 +8,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 public class CreateActivity extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+    private RequestAccess requestAccessDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +42,15 @@ public class CreateActivity extends AppCompatActivity {
             String price = priceField.getText().toString();
             final Spinner subjectSpinner = (Spinner)findViewById(R.id.spinner);
             String subject = subjectSpinner.getSelectedItem().toString();
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                mAuth = FirebaseAuth.getInstance();
+                mDatabase = FirebaseDatabase.getInstance().getReference();
+
+            requestAccessDB = new RequestAccess();
+            requestAccessDB.addBookToUser(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getUid(),
+                                    title, name, isbn,
+                                    pub, subject, price,"BUY");
+
+                Snackbar.make(view, "Added to database", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
 
