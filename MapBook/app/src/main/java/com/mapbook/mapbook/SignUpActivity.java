@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class SighUpActivity extends AppCompatActivity implements View.OnClickListener{
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth mAuth;
     private EditText editEmail;
@@ -30,7 +30,7 @@ public class SighUpActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sigh_up);
+        setContentView(R.layout.activity_sign_up);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -54,7 +54,7 @@ public class SighUpActivity extends AppCompatActivity implements View.OnClickLis
                             // Sign in success, update UI with the signed-in user's information
 //                            Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(SighUpActivity.this, "Authentication successful.",
+                            Toast.makeText(SignUpActivity.this, "Authentication successful.",
                                     Toast.LENGTH_SHORT).show();
 
                             writeNewUser(mAuth.getCurrentUser().getUid(), email);
@@ -63,7 +63,7 @@ public class SighUpActivity extends AppCompatActivity implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
 //                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SighUpActivity.this, "Authentication failed.",
+                            Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
 //                            updateUI(null);
                         }
@@ -75,7 +75,7 @@ public class SighUpActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onFailure(@NonNull Exception e) {
 
-                        Toast.makeText(SighUpActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }});
     }
 

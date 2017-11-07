@@ -6,8 +6,7 @@
     <!-- Strings related to Add sale -->
 
     <string name="prompt_book_title">Book Title</string>
-    <string name="prompt_author_first_name">Author \'s First Name</string>
-    <string name="prompt_author_last_name">Author \'s Last Name</string>
+    <string name="prompt_author_name">Name of Author</string>
     <string name="prompt_publisher">Publisher</string>
     <string name="prompt_isbn">ISBN</string>
     <string name="prompt_category">Category</string>
@@ -20,4 +19,11 @@
         <item>Chemistry</item>
         <item>Computer Science</item>
     </string-array>
+
+    <string name="title_activity_main_navigation">MainNavigation</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
