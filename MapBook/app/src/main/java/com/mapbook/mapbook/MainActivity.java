@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                            writeNewBook(mAuth.getCurrentUser().getUid(), email,
 //                                    "War and Peace", "Tolsto", "99877",
 //                                    "Princeton", "English", "50","BUY");
-                            writeNewUser(mAuth.getCurrentUser().getUid(), email);
+//                            writeNewUser(mAuth.getCurrentUser().getUid(), email);
                             logIn();
 //                            updateUI(user);
                         } else {
