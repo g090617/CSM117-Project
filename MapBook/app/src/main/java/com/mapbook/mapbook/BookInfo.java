@@ -5,6 +5,7 @@ package com.mapbook.mapbook;
  */
 
 public class BookInfo {
+    public String bookID;
     public String title;
     public String author;
     public String isbn;
@@ -17,14 +18,20 @@ public class BookInfo {
 
     }
 
-    public BookInfo(String title, String author, String isbn, String publisher,
+    public BookInfo(String bookID, String title, String author, String isbn, String publisher,
                     String subject, String price, String status){
+        this.bookID = bookID;
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.publisher = publisher;
         this.subject = subject;
         this.price = price;
+        this.status = status;
+    }
+
+    public BookInfo(String bookID, String status){
+        this.bookID = bookID;
         this.status = status;
     }
 }
