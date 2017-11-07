@@ -71,6 +71,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         User user = new User(userId, email);
 
         mDatabase.child("users").child(userId).setValue(user);
+
+
+//        DatabaseReference newRef = mDatabase.child("users").child(userId).child("bookIDMap").push();//create a new book id
+//
+//        BookInfo book = new BookInfo(newRef.getKey().toString(), "Sell");
+////        user.addBookToUser("018444441", "Basvvvy");
+//
+//        newRef.setValue(book);
     }
 
     private void userLogIn(){
