@@ -24,6 +24,7 @@ public class CreateActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private RequestAccess requestAccessDB;
     private static final String TAG = "CreateActivity";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,7 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO:Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName());
+                Log.i(TAG, "Place: " + place);
             }
 
             @Override
