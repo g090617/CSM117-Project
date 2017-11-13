@@ -23,6 +23,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void onConfirmClick(View v) {
+        //Intent intent = new Intent(this, MarkerDemoActivity.class);
         Intent intent = new Intent(this, MainNavigation.class);
         EditText locationSearch = (EditText) findViewById(R.id.editZipcode);
         String location = locationSearch.getText().toString();
