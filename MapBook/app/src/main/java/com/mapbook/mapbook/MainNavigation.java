@@ -21,19 +21,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
 
 public class MainNavigation extends AppCompatActivity
-        implements GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+        implements GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnInfoWindowLongClickListener, GoogleMap.OnInfoWindowClickListener,OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
     @Override
@@ -100,7 +102,9 @@ public class MainNavigation extends AppCompatActivity
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_add) {
+            Intent intent = new Intent(this, CreateActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -144,9 +148,13 @@ public class MainNavigation extends AppCompatActivity
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Log.i("address", String.valueOf(addressList));
                 Address address = addressList.get(0);
+
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+                mMap.addMarker(new MarkerOptions().position(latLng).title("click here to get book information!"));
+                mMap.setOnInfoWindowClickListener(this);
+                mMap.setOnInfoWindowLongClickListener(this);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             }
         }
@@ -174,5 +182,25 @@ public class MainNavigation extends AppCompatActivity
                 == PackageManager.PERMISSION_GRANTED) {
             enableLocation();
         }
+    }
+    public void onInfoWindowClick(Marker marker) {
+        Toast.makeText(this, "this.bookID = bookID;\n" +
+                        "        this.title = title;\n" +
+                        "        this.author = author;\n" +
+                        "        this.isbn = isbn;\n" +
+                        "        this.subject = subject;\n" +
+                        "        this.seller = seller;\n" +
+                        "        this.price = price;\n" +
+                        "        this.status = status; ",
+                Toast.LENGTH_LONG).show();
+    }
+    public void onInfoWindowLongClick(Marker marker) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }
