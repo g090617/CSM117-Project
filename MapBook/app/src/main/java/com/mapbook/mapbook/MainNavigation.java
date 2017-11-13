@@ -148,8 +148,8 @@ public class MainNavigation extends AppCompatActivity
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Log.i("address", String.valueOf(addressList));
                 Address address = addressList.get(0);
-
 
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(latLng).title("click here to get book information!"));
