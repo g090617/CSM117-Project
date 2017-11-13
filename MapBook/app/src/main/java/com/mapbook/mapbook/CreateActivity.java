@@ -39,7 +39,14 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO:Get info about the selected place.
-                Log.i(TAG, "Place: " + place);
+
+                location = place.getLatLng();
+                String address = (String) place.getAddress();
+                String[] addressArr = address.split(",");
+                String state_zip = addressArr[addressArr.length-2];
+                zip = state_zip.replaceAll("[^-?0-9]+", "");
+                Log.i(TAG, "Place: " + location);
+                Log.i(TAG, "ZIP: " + zip);
             }
 
             @Override
