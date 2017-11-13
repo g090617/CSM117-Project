@@ -13,10 +13,10 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 
 public class CreateActivity extends AppCompatActivity {
 
@@ -24,6 +24,8 @@ public class CreateActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private RequestAccess requestAccessDB;
     private static final String TAG = "CreateActivity";
+    private LatLng location;
+    private String zip;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,8 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO:Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName());
+                Log.i("Place", "Place: " + place);
+
             }
 
             @Override
@@ -62,8 +65,8 @@ public class CreateActivity extends AppCompatActivity {
             String price = priceField.getText().toString();
             final Spinner subjectSpinner = (Spinner)findViewById(R.id.spinner);
             String subject = subjectSpinner.getSelectedItem().toString();
-                mAuth = FirebaseAuth.getInstance();
-                mDatabase = FirebaseDatabase.getInstance().getReference();
+            mAuth = FirebaseAuth.getInstance();
+            mDatabase = FirebaseDatabase.getInstance().getReference();
 
             requestAccessDB = new RequestAccess();
             requestAccessDB.addBookToUser(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getUid(),
@@ -72,7 +75,6 @@ public class CreateActivity extends AppCompatActivity {
 
                 Snackbar.make(view, "Added to database", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-
 
             }
         });
