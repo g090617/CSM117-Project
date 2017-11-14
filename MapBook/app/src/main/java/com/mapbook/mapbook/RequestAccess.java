@@ -48,8 +48,8 @@ public class RequestAccess {
     }
 
     public void addBookToLocation(String bookID, String zipCode){
-        DatabaseReference newRef = mDatabase.child("ZipCodeBook").child(zipCode).push();
-        newRef.setValue(bookID);
+//        BookInfo book = new BookInfo(bookID, "Buy");
+        mDatabase.child("ZipCodeBook").child(zipCode).child(bookID).setValue(bookID);
     }
 
 }
