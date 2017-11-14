@@ -45,7 +45,7 @@ public class CreateActivity extends AppCompatActivity {
                 String[] addressArr = address.split(",");
                 String state_zip = addressArr[addressArr.length-2];
                 zip = state_zip.replaceAll("[^-?0-9]+", "");
-                Log.i(TAG, "Place: " + location);
+                Log.i(TAG, "Place: " + String.valueOf( location.longitude) +"and " + String.valueOf(location.latitude));
                 Log.i(TAG, "ZIP: " + zip);
             }
 
@@ -79,8 +79,8 @@ public class CreateActivity extends AppCompatActivity {
             requestAccessDB = new RequestAccess();
             requestAccessDB.addBookToUser(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getUid(),
                                     title, name, isbn,
-                                    pub, subject, price,"BUY", "90024",
-                        "123", "456");
+                                    pub, subject, price,"SELL", zip,
+                       String.valueOf( location.longitude), String.valueOf(location.latitude));
 
 
                 Snackbar.make(view, "Added to database", Snackbar.LENGTH_LONG)
