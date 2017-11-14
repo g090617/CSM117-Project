@@ -13,13 +13,17 @@ public class BookInfo {
     public String subject;
     public String price;
     public String status;
+    public String zipCode;
+    public String longtitude;
+    public String latitude;
 
     public BookInfo(){
 
     }
 
     public BookInfo(String bookID, String title, String author, String isbn, String publisher,
-                    String subject, String price, String status){
+                    String subject, String price, String status, String zipCode, String longtitude,
+                    String latitude){
         this.bookID = bookID;
         this.title = title;
         this.author = author;
@@ -28,6 +32,9 @@ public class BookInfo {
         this.subject = subject;
         this.price = price;
         this.status = status;
+        this.zipCode = zipCode;
+        this.longtitude = longtitude;
+        this.latitude = latitude;
     }
 
     public BookInfo(String bookID, String status){

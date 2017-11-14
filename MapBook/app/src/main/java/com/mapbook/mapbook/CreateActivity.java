@@ -79,7 +79,9 @@ public class CreateActivity extends AppCompatActivity {
             requestAccessDB = new RequestAccess();
             requestAccessDB.addBookToUser(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getUid(),
                                     title, name, isbn,
-                                    pub, subject, price,"BUY");
+                                    pub, subject, price,"BUY", "90024",
+                        "123", "456");
+
 
                 Snackbar.make(view, "Added to database", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();

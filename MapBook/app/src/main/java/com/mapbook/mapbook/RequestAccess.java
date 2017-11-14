@@ -22,7 +22,8 @@ public class RequestAccess {
 
     public void addBookToUser(String userId, String email, String title, String author, String isbn,
                               String publisher,
-                              String subject, String price, String status){
+                              String subject, String price, String status,String zipCode,
+                              String longtitude, String latitude){
         User user = new User(userId, email);
         DatabaseReference newRef = mDatabase.child("users").child(userId).child("bookIDMap").push();//create a new book id
 
@@ -32,15 +33,23 @@ public class RequestAccess {
         newRef.setValue(book);
 
         addBookToBookDatabase(newRef.getKey().toString(), title, author, isbn, publisher, subject,
-                price, status);
+                price, status, zipCode, longtitude, latitude);
+
+        addBookToLocation(newRef.getKey().toString(), zipCode);
     }
 
     public void addBookToBookDatabase(String bookID, String title, String author, String isbn,
                                       String publisher,
-                                      String subject, String price, String status){
+                                      String subject, String price, String status, String zipCode,
+                                      String longtitude, String latitude){
         BookInfo book = new BookInfo(bookID, title, author, isbn, publisher,
-                subject, price, status);
+                subject, price, status, zipCode, longtitude, latitude);
         mDatabase.child("BookDB").child(bookID).setValue(book);
+    }
+
+    public void addBookToLocation(String bookID, String zipCode){
+        DatabaseReference newRef = mDatabase.child("ZipCodeBook").child(zipCode).push();
+        newRef.setValue(bookID);
     }
 
 }
