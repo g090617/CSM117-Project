@@ -9,6 +9,7 @@ import android.widget.EditText;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,12 +29,14 @@ import static android.content.ContentValues.TAG;
  * Created by g090617 on 11/6/17.
  */
 
-public class RequestAccess{
+public class RequestAccess extends  AppCompatActivity{
     private DatabaseReference mDatabase;
     public RequestAccess(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
     final ArrayList<BookInfo> bookInfoArrayList = new ArrayList<>(10);
+    static BookInfo someBook;
+    static User someUser;
 
     public void writeNewUser(String userId, String email) {
         User user = new User(userId, email);
@@ -42,15 +45,14 @@ public class RequestAccess{
 
     }
 
-    public void addBookToUser(String userId, String email, String title, String author, String isbn,
+    public void addBookToUser(final String userId, String email, String title, String author, String isbn,
                               String publisher,
-                              String subject, String price, String status,String zipCode,
+                              String subject, String price, String status, String zipCode,
                               String longtitude, String latitude){
         User user = new User(userId, email);
         final DatabaseReference newRef = mDatabase.child("users").child(userId).child("bookIDMap").push();//create a new book id
 
         BookInfo book = new BookInfo(newRef.getKey().toString(), status);
-//        user.addBookToUser("018444441", "Basvvvy");
 
         newRef.setValue(book);
 
@@ -59,21 +61,6 @@ public class RequestAccess{
 
         addBookToLocation(newRef.getKey().toString(), zipCode);
 
-        getUser(userId);
-
-
-
-
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                getBookInfoByBookID(newRef.getKey().toString());
-            }
-        });
-
-
-
-//        Log.d(TAG, "hash code is  " + this.bookInfoArrayList.hashCode());
 
     }
 
@@ -92,9 +79,12 @@ public class RequestAccess{
     }
 
     public void getUser(String userID){
+        Log.w(TAG, "In get user");
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
                 "users/" + userID);
 
+
+        final TaskCompletionSource<Object> tcs = new TaskCompletionSource<>();
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -102,16 +92,14 @@ public class RequestAccess{
                 // whenever data at this location is updated.
                 User value = dataSnapshot.getValue(User.class);
                 Log.d(TAG, "Value is: " + value.email + value.userID + value.bookIDMap.keySet().toString());
-                for(final String key : value.bookIDMap.keySet()){
 
-                    Executors.newSingleThreadExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            getBookInfoByBookID(key);
-                        }
-                    });
-                }
+                tcs.setResult(value);
+//                for(final String key : value.bookIDMap.keySet()){
+//
+//                    getterBookInFoByBookID(key);
+//                }
             }
+
 
             @Override
             public void onCancelled(DatabaseError error) {
@@ -119,6 +107,22 @@ public class RequestAccess{
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+
+        Task<Object> t = tcs.getTask();
+        try{
+            Tasks.await(t);
+        }catch (ExecutionException | InterruptedException d){
+
+        }
+
+        User tempUser;
+        if(t.isSuccessful()){
+            Object result = t.getResult();
+            tempUser = (User)result;
+            Log.w(TAG, "Successful  ===============" + tempUser.email);
+            this.someUser = tempUser;
+
+        }
 
     }
 
@@ -154,15 +158,65 @@ public class RequestAccess{
 
         }
 
+        BookInfo tempBook;
         if(t.isSuccessful()){
             Object result = t.getResult();
-            System.out.print("Successful ===============");
-            System.out.print(result);
-            BookInfo tempBook = (BookInfo)result;
+            tempBook = (BookInfo)result;
             Log.w(TAG, "Successful ===============" + tempBook.title);
+            someBook = tempBook;
         }
 
+    }
 
+    public BookInfo getterBookInFoByBookID(final String bookID){
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                getBookInfoByBookID(bookID);
+            }
+        });
+        Log.w(TAG, "Successful somebook ===============" + this.someBook.title);
+        return this.someBook;
+    }
+
+    public void testingFunc(String userID){
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "users/" + userID);
+//        userRef.orderByChild("title")
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User value = dataSnapshot.getValue(User.class);
+                Log.d(TAG, "Value is: " + value.email + value.userID + value.bookIDMap.keySet().toString());
+                User tempUser;
+                tempUser = value;
+                someUser = tempUser;
+                throw new ArithmeticException("throw");
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+
+    }
+
+    public  void getterUserByUserID(final String userID){
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.w(TAG, "running new thread");
+                getUser(userID);
+
+            }
+        });
+        EditText tempEdit = findViewById(R.id.editText2);
+        tempEdit.setText("tempUser.email");
     }
 
 }
