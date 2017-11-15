@@ -7,15 +7,9 @@ import java.util.HashMap;
  */
 
 public class ZipCodeBook {
-    String zipCode;
-    String bookID;
-    String bookStatus;
     public HashMap<String, String> zipBookMap;
 
     public void addBookToZipCode(String zipCode, String bookID, String bookStatus){
-        this.zipCode = zipCode;
-        this.bookID = bookID;
-        this.bookStatus = bookStatus;
         this.zipBookMap = new HashMap<>();
 
     }
