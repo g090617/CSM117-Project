@@ -27,8 +27,8 @@ public class User {
         this.bookIDMap = new HashMap<>();
     }
 
-    public void addBookToUser(String bookID, String status){
-        BookInfo b1 = new BookInfo(bookID,status);
-        this.bookIDMap.put(bookID, b1);
-    }
+//    public void addBookToUser(String bookID, String status){
+//        BookInfo b1 = new BookInfo(bookID,status);
+//        this.bookIDMap.put(bookID, b1);
+//    }
 }
