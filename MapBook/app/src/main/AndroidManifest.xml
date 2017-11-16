@@ -30,17 +30,19 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCllKovCuX7bTBAYUdpclXMT_o-32QzxeM" />
 
-
-        <activity android:name=".CreateActivity"
+        <activity
+            android:name=".CreateActivity"
             android:label="Create Sale"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SignUpActivity" />
         <activity
             android:name=".MainNavigation"
             android:label="@string/title_activity_main_navigation"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SearchActivity"></activity>
-
-</application>
+        <activity android:name=".SearchActivity" />
+        <activity
+            android:name=".ViewSaleActivity"
+            android:label="@string/title_activity_view_sale"></activity>
+    </application>
 
 </manifest>
