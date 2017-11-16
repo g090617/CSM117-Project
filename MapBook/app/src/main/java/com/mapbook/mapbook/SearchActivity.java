@@ -49,18 +49,20 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void onConfirmClick(View v) {
-        //Intent intent = new Intent(this, MarkerDemoActivity.class);
         Intent intent = new Intent(this, MainNavigation.class);
-        EditText locationSearch = (EditText) findViewById(R.id.editZipcode);
-        String location = locationSearch.getText().toString();
-//        intent.putExtra("location", location);
-//        startActivity(intent);
+        EditText zip = (EditText) findViewById(R.id.editZipcode);
+        String zipcode = zip.getText().toString();
+        EditText title = (EditText) findViewById(R.id.editTitle);
+        String bookTitle = title.getText().toString();
+        intent.putExtra("zip", zipcode);
+        intent.putExtra("title", bookTitle);
+        startActivity(intent);
 
 //        getBookInfoByZipCode(((EditText) findViewById(R.id.editZipcode)).getText().toString());
-        mAuth = FirebaseAuth.getInstance();
+//        mAuth = FirebaseAuth.getInstance();
 //        testingFunc(mAuth.getCurrentUser().getUid());
 //        getBookByZipCodeAndTitle(((EditText) findViewById(R.id.editZipcode)).getText().toString(),"Kjnkjnkjn");
-        getUserInfoByUserID(mAuth.getCurrentUser().getUid());
+//        getUserInfoByUserID(mAuth.getCurrentUser().getUid());
     }
 
     public void getBookInfoByBookID(String bookID){

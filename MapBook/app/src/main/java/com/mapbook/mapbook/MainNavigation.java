@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,16 +31,25 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class MainNavigation extends AppCompatActivity
         implements GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnInfoWindowLongClickListener, GoogleMap.OnInfoWindowClickListener,OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
     private BookInfo bookCreated;
+    private FirebaseAuth mAuth;
     private HashMap<Marker, BookInfo> markerBookInfoHashMap = new HashMap<>();
 
     @Override
@@ -173,13 +183,47 @@ public class MainNavigation extends AppCompatActivity
                 LatLng latLng = new LatLng(Double.parseDouble(bookCreated.latitude), Double.parseDouble(bookCreated.longtitude));
                 Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("click here to check book information"));
                 mMap.setOnInfoWindowClickListener(this);
-                mMap.setOnInfoWindowLongClickListener(this);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
                 markerBookInfoHashMap.put(marker, bookCreated);
             }
         }
+
+        String zip = intent.getStringExtra("zip");
+        if (zip != null) {
+            String title = intent.getStringExtra("title");
+            if (title == null) {
+
+            }
+        }
     }
+
+    public void getBookInfoByBookID(String bookID){
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "BookDB/" + bookID);
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                BookInfo value = dataSnapshot.getValue(BookInfo.class);
+                Log.d(TAG, "Book title: " + value.title + "\n" +
+                        "Author: " + value.author + "\n" +
+                        "Publisher: " + value.publisher + "\n" +
+                        "Zip code : " + value.zipCode);
+                if(value.status.equals("SELL"))
+                    books.add(value.title);
+                setListAdapter(new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1,books));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
 
     private void enableLocation() {
         if (!(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
