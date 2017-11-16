@@ -12,10 +12,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -25,9 +27,9 @@ import java.util.concurrent.Executors;
 import static android.content.ContentValues.TAG;
 
 public class SearchActivity extends AppCompatActivity {
-    public BookInfo someBook;
-    public ZipCodeBook someZipCodeBook;
-    private FirebaseAuth mAuth;
+//    public BookInfo someBook;
+//    public ZipCodeBook someZipCodeBook;
+//    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,10 @@ public class SearchActivity extends AppCompatActivity {
 //        intent.putExtra("location", location);
 //        startActivity(intent);
 
-        getBookInfoByZipCode(((EditText) findViewById(R.id.editZipcode)).getText().toString());
-        mAuth = FirebaseAuth.getInstance();
+//        getBookInfoByZipCode(((EditText) findViewById(R.id.editZipcode)).getText().toString());
+//        mAuth = FirebaseAuth.getInstance();
 //        testingFunc(mAuth.getCurrentUser().getUid());
+        getBookByZipCodeAndTitle(((EditText) findViewById(R.id.editZipcode)).getText().toString(),"Kjnkjnkjn");
     }
 
     public void getBookInfoByBookID(String bookID){
@@ -102,8 +105,7 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-
-    public void testingFunc(String userID){
+    public void getUserInfoByUserID(String userID){
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
                 "users/" + userID);
 //        userRef.orderByChild("title")
@@ -116,6 +118,9 @@ public class SearchActivity extends AppCompatActivity {
                         value.bookIDMap.keySet().toString());
                 EditText tempEdit = findViewById(R.id.editZipcode);
                 tempEdit.setText(value.email);
+                for(final String key : value.bookIDMap.keySet()){
+                    getBookInfoByBookID(key);
+                }
             }
 
             @Override
@@ -125,5 +130,72 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void getBookByZipCodeAndTitle(final String zipCode, String title){
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "BookDB");
+        userRef.orderByChild("title").
+                equalTo(title).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                BookInfo tempBook = dataSnapshot.getValue(BookInfo.class);
+                if(tempBook.zipCode.equals(zipCode)) {
+                    Log.d(TAG, "Book title: " + tempBook.title + "\n" +
+                            "Author: " + tempBook.author + "\n" +
+                            "Publisher: " + tempBook.publisher + "\n" +
+                            "Zip code : " + tempBook.zipCode);
+                }
+//                Query query = userRef.orderByChild("zipCode").equalTo(zipCode);
+//                query.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        BookInfo tempBook = dataSnapshot.getValue(BookInfo.class);
+//                        Log.d(TAG, "Book title: " + tempBook.title + "\n" +
+//                                "Author: " + tempBook.author + "\n" +
+//                                "Publisher: " + tempBook.publisher + "\n" +
+//                                "Zip code : " + tempBook.zipCode);
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                BookInfo tempBook = dataSnapshot.getValue(BookInfo.class);
+                Log.d(TAG, "Book title: " + tempBook.title + "\n" +
+                        "Author: " + tempBook.author + "\n" +
+                        "Publisher: " + tempBook.publisher + "\n" +
+                        "Zip code : " + tempBook.zipCode);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                BookInfo tempBook = dataSnapshot.getValue(BookInfo.class);
+                Log.d(TAG, "Book title: " + tempBook.title + "\n" +
+                        "Author: " + tempBook.author + "\n" +
+                        "Publisher: " + tempBook.publisher + "\n" +
+                        "Zip code : " + tempBook.zipCode);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                BookInfo tempBook = dataSnapshot.getValue(BookInfo.class);
+                Log.d(TAG, "Book title: " + tempBook.title + "\n" +
+                        "Author: " + tempBook.author + "\n" +
+                        "Publisher: " + tempBook.publisher + "\n" +
+                        "Zip code : " + tempBook.zipCode);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
