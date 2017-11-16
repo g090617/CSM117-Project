@@ -99,7 +99,7 @@ public class MainNavigation extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle view_navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_search) {
@@ -110,7 +110,9 @@ public class MainNavigation extends AppCompatActivity
             Intent intent = new Intent(this, CreateActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_my_sale) {
+            Intent intent = new Intent(this, ViewSaleActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
 
