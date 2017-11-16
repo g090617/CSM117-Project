@@ -22,6 +22,9 @@ public class BookInfo implements Parcelable {
     public String longtitude;
     public String latitude;
 
+    public BookInfo(){
+
+    }
     public BookInfo(String bookID, String title, String author, String isbn, String publisher,
                     String subject, String price, String status, String zipCode, String longtitude,
                     String latitude){
