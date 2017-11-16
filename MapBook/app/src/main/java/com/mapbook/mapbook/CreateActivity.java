@@ -1,6 +1,8 @@
 package com.mapbook.mapbook;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.Serializable;
 
 public class CreateActivity extends AppCompatActivity {
 
@@ -86,6 +90,12 @@ public class CreateActivity extends AppCompatActivity {
                 Snackbar.make(view, "Added to database", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
+            BookInfo bookCreated = new BookInfo(null, title, name, isbn, pub, subject, price, null, zip,
+                    String.valueOf(location.longitude), String.valueOf(location.latitude));
+
+            Intent intent = new Intent(getApplicationContext(), MainNavigation.class);
+            intent.putExtra("bookCreated", bookCreated);
+            startActivity(intent);
             }
         });
     }

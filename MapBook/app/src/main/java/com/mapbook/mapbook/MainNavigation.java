@@ -32,12 +32,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainNavigation extends AppCompatActivity
         implements GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnInfoWindowLongClickListener, GoogleMap.OnInfoWindowClickListener,OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
+    private BookInfo bookCreated;
+    private HashMap<Marker, BookInfo> markerBookInfoHashMap = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,29 +137,44 @@ public class MainNavigation extends AppCompatActivity
         mMap.getUiSettings().setZoomControlsEnabled(true);
         enableLocation();
 
-        Log.i("enter","before");
+//        Log.i("enter","before");
+//        Intent intent = getIntent();
+//        String location = intent.getStringExtra("location");
+//        if (location != null) {
+//            Log.i("enter","after");
+//            Log.i("enter", location);
+//            List<Address> addressList = null;
+//            if (location != null || !location.equals("")) {
+//                Geocoder geocoder = new Geocoder(this);
+//                try {
+//                    addressList = geocoder.getFromLocationName(location, 1);
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                Log.i("address", String.valueOf(addressList));
+//                Address address = addressList.get(0);
+//
+//                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+//                mMap.addMarker(new MarkerOptions().position(latLng).title("click here to get book information!"));
+//                mMap.setOnInfoWindowClickListener(this);
+//                mMap.setOnInfoWindowLongClickListener(this);
+//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+//            }
+//        }
+        markerBookInfoHashMap.clear();
         Intent intent = getIntent();
-        String location = intent.getStringExtra("location");
-        if (location != null) {
-            Log.i("enter","after");
-            Log.i("enter", location);
-            List<Address> addressList = null;
-            if (location != null || !location.equals("")) {
-                Geocoder geocoder = new Geocoder(this);
-                try {
-                    addressList = geocoder.getFromLocationName(location, 1);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Log.i("address", String.valueOf(addressList));
-                Address address = addressList.get(0);
-
-                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(latLng).title("click here to get book information!"));
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            bookCreated = intent.getExtras().getParcelable("bookCreated");
+            if (bookCreated != null) {
+                LatLng latLng = new LatLng(Double.parseDouble(bookCreated.latitude), Double.parseDouble(bookCreated.longtitude));
+                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("click here to check book information"));
                 mMap.setOnInfoWindowClickListener(this);
                 mMap.setOnInfoWindowLongClickListener(this);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+                markerBookInfoHashMap.put(marker, bookCreated);
             }
         }
     }
@@ -184,14 +203,13 @@ public class MainNavigation extends AppCompatActivity
         }
     }
     public void onInfoWindowClick(Marker marker) {
-        Toast.makeText(this, "this.bookID = bookID;\n" +
-                        "        this.title = title;\n" +
-                        "        this.author = author;\n" +
-                        "        this.isbn = isbn;\n" +
-                        "        this.subject = subject;\n" +
-                        "        this.seller = seller;\n" +
-                        "        this.price = price;\n" +
-                        "        this.status = status; ",
+        BookInfo bookInfo = markerBookInfoHashMap.get(marker);
+        Toast.makeText(this,
+                        "        Title: " + bookInfo.title + "\n" +
+                        "        Author: " + bookInfo.author + "\n" +
+                        "        ISBN: " + bookInfo.isbn + "\n" +
+                        "        Subject: " + bookInfo.subject + "\n" +
+                        "        Price: " + bookInfo.price + "\n",
                 Toast.LENGTH_LONG).show();
     }
     public void onInfoWindowLongClick(Marker marker) {
