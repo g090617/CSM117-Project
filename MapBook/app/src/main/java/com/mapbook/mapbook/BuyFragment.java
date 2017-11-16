@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +13,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.widget.ListView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BuyFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BuyFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
+
+
 public class BuyFragment extends ListFragment {
-    String[] books = {
-            "English book",
-            "Math",
-            "Chinese",
-            "Computer Science"
-    };
+    ArrayList<String> books = new ArrayList<String>();
+    private FirebaseAuth mAuth;
    // private OnFragmentInteractionListener mListener;
 
     public BuyFragment() {
@@ -44,8 +44,11 @@ public class BuyFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setListAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1,books));
+
+        mAuth = FirebaseAuth.getInstance();
+
+        getUserInfoByUserID(mAuth.getCurrentUser().getUid());
+
 
     }
 
@@ -53,7 +56,7 @@ public class BuyFragment extends ListFragment {
                                 int position, long id)
     {
         Toast.makeText(getActivity(),
-                "You have selected " + books[position],
+                "You have selected " + books.get(position),
                 Toast.LENGTH_SHORT).show();
     }
     @Override
@@ -103,4 +106,58 @@ public class BuyFragment extends ListFragment {
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
+public void getBookInfoByBookID(String bookID){
+    final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+            "BookDB/" + bookID);
+
+    userRef.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            // This method is called once with the initial value and again
+            // whenever data at this location is updated.
+            BookInfo value = dataSnapshot.getValue(BookInfo.class);
+            Log.d(TAG, "Book title: " + value.title + "\n" +
+                    "Author: " + value.author + "\n" +
+                    "Publisher: " + value.publisher + "\n" +
+                    "Zip code : " + value.zipCode);
+            if(value.status.equals("BUY"))
+                books.add(value.title);
+            setListAdapter(new ArrayAdapter<String>(getActivity(),
+                    android.R.layout.simple_list_item_1,books));
+        }
+
+        @Override
+        public void onCancelled(DatabaseError error) {
+            // Failed to read value
+            Log.w(TAG, "Failed to read value.", error.toException());
+        }
+    });
+
+}
+    public void getUserInfoByUserID(String userID){
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "users/" + userID);
+//        userRef.orderByChild("title")
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User value = dataSnapshot.getValue(User.class);
+                Log.d(TAG, "Testing Value is: " + value.email + value.userID +
+                        value.bookIDMap.keySet().toString());
+//                EditText tempEdit = findViewById(R.id.editZipcode);
+//                tempEdit.setText(value.email);
+                for(final String key : value.bookIDMap.keySet()){
+                    getBookInfoByBookID(key);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+    }
 }

@@ -29,12 +29,17 @@ import static android.content.ContentValues.TAG;
 public class SearchActivity extends AppCompatActivity {
 //    public BookInfo someBook;
 //    public ZipCodeBook someZipCodeBook;
-//    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        mAuth = FirebaseAuth.getInstance();
+//        testingFunc(mAuth.getCurrentUser().getUid());
+//        getBookByZipCodeAndTitle(((EditText) findViewById(R.id.editZipcode)).getText().toString(),"Kjnkjnkjn");
+        getUserInfoByUserID(mAuth.getCurrentUser().getUid());
     }
 
 
@@ -52,9 +57,10 @@ public class SearchActivity extends AppCompatActivity {
 //        startActivity(intent);
 
 //        getBookInfoByZipCode(((EditText) findViewById(R.id.editZipcode)).getText().toString());
-//        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 //        testingFunc(mAuth.getCurrentUser().getUid());
-        getBookByZipCodeAndTitle(((EditText) findViewById(R.id.editZipcode)).getText().toString(),"Kjnkjnkjn");
+//        getBookByZipCodeAndTitle(((EditText) findViewById(R.id.editZipcode)).getText().toString(),"Kjnkjnkjn");
+        getUserInfoByUserID(mAuth.getCurrentUser().getUid());
     }
 
     public void getBookInfoByBookID(String bookID){

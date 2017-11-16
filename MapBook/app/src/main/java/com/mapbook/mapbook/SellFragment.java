@@ -51,8 +51,9 @@ public class SellFragment extends ListFragment {
         mAuth = FirebaseAuth.getInstance();
 
         getUserInfoByUserID(mAuth.getCurrentUser().getUid());
-        setListAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1,books));
+//        Log.d(TAG, "BOOK 0" + books.get(0));
+
+
     }
     public void onListItemClick(ListView parent, View v,
                                 int position, long id)
@@ -120,7 +121,10 @@ public void getBookInfoByBookID(String bookID){
                     "Author: " + value.author + "\n" +
                     "Publisher: " + value.publisher + "\n" +
                     "Zip code : " + value.zipCode);
-            books.add(value.title);
+            if(value.status.equals("SELL"))
+                books.add(value.title);
+            setListAdapter(new ArrayAdapter<String>(getActivity(),
+                    android.R.layout.simple_list_item_1,books));
         }
 
         @Override
