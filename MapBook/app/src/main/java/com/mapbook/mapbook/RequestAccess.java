@@ -4,6 +4,8 @@ import android.app.usage.UsageEvents;
 import android.support.v7.app.AppCompatActivity;
 import android.util.EventLog;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 
 import com.google.android.gms.tasks.Task;
@@ -29,7 +31,7 @@ import static android.content.ContentValues.TAG;
  * Created by g090617 on 11/6/17.
  */
 
-public class RequestAccess extends  AppCompatActivity{
+public class RequestAccess extends  CreateActivity{
     private DatabaseReference mDatabase;
     public RequestAccess(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -188,11 +190,12 @@ public class RequestAccess extends  AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User value = dataSnapshot.getValue(User.class);
-                Log.d(TAG, "Value is: " + value.email + value.userID + value.bookIDMap.keySet().toString());
+                Log.d(TAG, "Testing Value is: " + value.email + value.userID +
+                        value.bookIDMap.keySet().toString());
+
                 User tempUser;
                 tempUser = value;
                 someUser = tempUser;
-                throw new ArithmeticException("throw");
             }
 
 
