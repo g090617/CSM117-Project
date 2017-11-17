@@ -68,11 +68,6 @@ public class Chat extends AppCompatActivity {
                 String messageText = "0" + messageArea.getText().toString();
                 DatabaseReference tempRef = FirebaseDatabase.getInstance().getReference("Chat/user2/user1");
                 if (!messageText.equals("")) {
-//                    HashMap<String, ArrayList<String>> map = new HashMap<>();
-//                    ArrayList<String> tempList = chatHistory;
-//                    tempList.add(messageText);
-//                    map.put("user1", tempList);
-//                    tempRef.setValue(map);
 
                     ArrayList<String> tempList = chatHistory;
                     tempList.add(messageText);
@@ -88,11 +83,6 @@ public class Chat extends AppCompatActivity {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Log.d(TAG, "Value is " + dataSnapshot.getValue());
-//                    HashMap<String, ArrayList<String>> tempHist = (HashMap<String, ArrayList<String>>)
-//                            dataSnapshot.getValue();
-//                    Log.d(TAG, "Load History is " + tempHist.keySet());
-//                    chatHistory = tempHist.get(userID);
-//                    Log.d(TAG, "chat history size " + Integer.toString(chatHistory.size()));
 
                     Log.d(TAG, "snapshot key is " + dataSnapshot.getKey());
                     if(dataSnapshot.getKey().toString().equals(userID)) {
