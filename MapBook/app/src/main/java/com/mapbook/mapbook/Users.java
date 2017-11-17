@@ -1,7 +1,9 @@
 package com.mapbook.mapbook;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -17,14 +19,19 @@ import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
 
-public class Users extends AppCompatActivity {
+import android.view.View;
+import android.widget.Button;
+
+public class Users extends AppCompatActivity implements View.OnClickListener {
+
+    private Button go_back_button;
 
     private ArrayAdapter<String> listAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
-        getHistory("user2");
+
     }
 
     public void getHistory(String userID){
@@ -53,6 +60,18 @@ public class Users extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+    }
 
+    @Override
+    public void onClick(View v) {
+
+        switch(v.getId()) {
+            case R.id.go_back:
+                Intent intent = new Intent(this, MainNavigation.class);
+                startActivity(intent);
+                return;
+            default:
+                return;
+        }
     }
 }
