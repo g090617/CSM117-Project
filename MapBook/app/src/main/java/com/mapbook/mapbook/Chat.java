@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 
 
@@ -48,7 +51,12 @@ public class Chat extends AppCompatActivity {
         sendButton = (ImageView) findViewById(R.id.sendButton);
         messageArea = (EditText) findViewById(R.id.messageArea);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
+        toolbar = findViewById(R.id.chat_with_toolbar);
 
+        Intent myIntent = getIntent();
+        String userID = myIntent.getStringExtra("userID");
+        Log.d(TAG, "userID is " + userID);
+        toolbar.setTitle(userID);
 //        toolbar = (Toolbar) findViewById(R.id.chat_with_toolbar);
 //
 //        setSupportActionBar(toolbar);

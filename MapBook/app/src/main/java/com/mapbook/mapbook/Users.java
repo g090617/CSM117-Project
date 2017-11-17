@@ -22,6 +22,7 @@ import static android.content.ContentValues.TAG;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Users extends AppCompatActivity implements View.OnClickListener {
 
@@ -68,7 +69,11 @@ public class Users extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final String checkChild = userList.get(position);
-                startActivity(new Intent(Users.this, Chat.class));
+                Intent myIntent = new Intent(Users.this, Chat.class);
+                TextView tempText = (TextView)tempList.getChildAt(position);
+                myIntent.putExtra("userID", tempText.getText().toString());
+                startActivity(myIntent);
+//                startActivity(new Intent(Users.this, Chat.class));
             }
         });
     }
