@@ -53,7 +53,6 @@ public class Users extends AppCompatActivity implements View.OnClickListener {
                 Log.d(TAG, "History is " + tempHist.keySet());
                 userList = new ArrayList<String>(tempHist.keySet());
                 tempList.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_expandable_list_item_1, userList));
-
             }
 
             @Override
@@ -62,6 +61,8 @@ public class Users extends AppCompatActivity implements View.OnClickListener {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+
+
 
 
         tempList = findViewById(R.id.usersList);
