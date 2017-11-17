@@ -100,9 +100,9 @@ public class Chat extends AppCompatActivity {
                         for (int i = 0; i < chatHistory.size(); i++) {
                             Log.d(TAG, "In loop");
                             if (chatHistory.get(i).charAt(0) == '0')
-                                addMessageBox("You:\n" + chatHistory.get(i), 1);
+                                addMessageBox("You:\n" + chatHistory.get(i).substring(1), 1);
                             else
-                                addMessageBox(userID + ":\n" + chatHistory.get(i), 2);
+                                addMessageBox(userID + ":\n" + chatHistory.get(i).substring(1), 2);
                         }
                     }
                 }
