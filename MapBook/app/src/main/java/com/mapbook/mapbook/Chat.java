@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +41,8 @@ public class Chat extends AppCompatActivity {
     Toolbar toolbar;
     FirebaseAuth mAuth;
     DatabaseReference messageRef;
+    User chatTo;
+    ArrayList<String> chatHistory;
 
     @Override
 
@@ -57,6 +61,7 @@ public class Chat extends AppCompatActivity {
         String userID = myIntent.getStringExtra("userID");
         Log.d(TAG, "userID is " + userID);
         toolbar.setTitle(userID);
+//        chatTo.userID = userID;
 //        toolbar = (Toolbar) findViewById(R.id.chat_with_toolbar);
 //
 //        setSupportActionBar(toolbar);
@@ -65,58 +70,65 @@ public class Chat extends AppCompatActivity {
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //messageRef = FirebaseDatabase.getInstance().getReference("/messages");
+        messageRef = FirebaseDatabase.getInstance().getReference("Chat/");
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String messageText = messageArea.getText().toString();
 
                 if (!messageText.equals("")) {
-//                    Map<String, String> map = new HashMap<String, String>();
+                    HashMap<String, ArrayList<String>> map = new HashMap<>();
 //                    map.put("message", messageText);
 //                    map.put("user", mAuth.getCurrentUser().getUid());
-                    //messageRef.push().setValue(map);
-
-                        addMessageBox("You:\n" + messageText, 1);
+                    ArrayList<String> tempList = new ArrayList<>();
+                    tempList.add(messageText);
+                    map.put("user1", tempList);
+                    messageRef.setValue(map);
+                    addMessageBox("You:\n" + messageText, 1);
 //
                     messageArea.setText("");
                 }
             }
         });
         if (mAuth.getCurrentUser()!=null) {
-//            messageRef.addChildEventListener(new ChildEventListener() {
-//            //UserDetails.chatRef.addChildEventListener(new ChildEventListener() {
-//                @Override
-//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//
-//                    String message = String.valueOf(dataSnapshot.child("message").getValue());
-//                    String userName = String.valueOf(dataSnapshot.child("user").getValue());
-//                    if (userName.equals(mAuth.getCurrentUser().getUid())) {
-//                        addMessageBox("You:\n" + message, 1);
-//                    } else {
-//                        addMessageBox(mAuth.getCurrentUser().getEmail() + ":\n" + message, 2);
+            messageRef.addChildEventListener(new ChildEventListener() {
+            //UserDetails.chatRef.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Log.d(TAG, "Value is " + dataSnapshot.getValue());
+                    HashMap<String, ArrayList<String>> tempHist = (HashMap<String, ArrayList<String>>)
+                            dataSnapshot.getValue();
+//                ChatHist chatHist = dataSnapshot.getValue(ChatHist.class);
+
+//                Log.d(TAG, "History is " + chatHist.toString());
+                    Log.d(TAG, "History is " + tempHist.keySet());
+                    chatHistory = tempHist.get("user1");
+                    for(int i = 0; i < chatHistory.size(); i++)
+                        addMessageBox(chatHistory.get(i), 1);
+
 //                    }
-//                }
-//
-//                @Override
-//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//                }
-//
-//                @Override
-//                public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//                }
-//
-//                @Override
-//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
- //           });
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         } else {
             startActivity(new Intent(Chat.this, Chat.class));
 
