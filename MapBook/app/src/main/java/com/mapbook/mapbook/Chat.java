@@ -49,63 +49,66 @@ public class Chat extends AppCompatActivity {
         messageArea = (EditText) findViewById(R.id.messageArea);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
 
-        toolbar = (Toolbar) findViewById(R.id.chat_with_toolbar);
+//        toolbar = (Toolbar) findViewById(R.id.chat_with_toolbar);
+//
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle(mAuth.getCurrentUser().getEmail());
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(mAuth.getCurrentUser().getEmail());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        messageRef = FirebaseDatabase.getInstance().getReference("/messages");
+        //messageRef = FirebaseDatabase.getInstance().getReference("/messages");
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String messageText = messageArea.getText().toString();
 
                 if (!messageText.equals("")) {
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("message", messageText);
-                    map.put("user", mAuth.getCurrentUser().getUid());
-                    messageRef.push().setValue(map);
+//                    Map<String, String> map = new HashMap<String, String>();
+//                    map.put("message", messageText);
+//                    map.put("user", mAuth.getCurrentUser().getUid());
+                    //messageRef.push().setValue(map);
+
+                        addMessageBox("You:\n" + messageText, 1);
+//
                     messageArea.setText("");
                 }
             }
         });
         if (mAuth.getCurrentUser()!=null) {
-            messageRef.addChildEventListener(new ChildEventListener() {
-            //UserDetails.chatRef.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                    String message = String.valueOf(dataSnapshot.child("message").getValue());
-                    String userName = String.valueOf(dataSnapshot.child("user").getValue());
-                    if (userName.equals(mAuth.getCurrentUser().getUid())) {
-                        addMessageBox("You:\n" + message, 1);
-                    } else {
-                        addMessageBox(mAuth.getCurrentUser().getEmail() + ":\n" + message, 2);
-                    }
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+//            messageRef.addChildEventListener(new ChildEventListener() {
+//            //UserDetails.chatRef.addChildEventListener(new ChildEventListener() {
+//                @Override
+//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//
+//                    String message = String.valueOf(dataSnapshot.child("message").getValue());
+//                    String userName = String.valueOf(dataSnapshot.child("user").getValue());
+//                    if (userName.equals(mAuth.getCurrentUser().getUid())) {
+//                        addMessageBox("You:\n" + message, 1);
+//                    } else {
+//                        addMessageBox(mAuth.getCurrentUser().getEmail() + ":\n" + message, 2);
+//                    }
+//                }
+//
+//                @Override
+//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//                }
+//
+//                @Override
+//                public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//                }
+//
+//                @Override
+//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+ //           });
         } else {
             startActivity(new Intent(Chat.this, Chat.class));
 
@@ -121,12 +124,12 @@ public class Chat extends AppCompatActivity {
 
         if (type == 1) {
             lp2.gravity = Gravity.END;
-            textView.setBackgroundResource(R.mipmap.bubble_in);
+            textView.setBackgroundResource(R.mipmap.bubble_out);
             textView.getBackground().setAlpha(150);
             textView.setTextSize(18);
         } else {
             lp2.gravity = Gravity.START;
-            textView.setBackgroundResource(R.mipmap.bubble_out);
+            textView.setBackgroundResource(R.mipmap.bubble_in);
             textView.getBackground().setAlpha(150);
             textView.setTextSize(18);
         }

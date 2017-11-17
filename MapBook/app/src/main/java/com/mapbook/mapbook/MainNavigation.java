@@ -135,6 +135,8 @@ public class MainNavigation extends AppCompatActivity
             Intent intent = new Intent(this, Users.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(this, Chat.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_logout) {
             Intent intent = new Intent(this, MainActivity.class);
