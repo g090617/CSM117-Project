@@ -21,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="5dp"
-        android:layout_weight="20">
+        android:layout_weight="20"
+        android:layout_gravity="bottom">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/layout2"

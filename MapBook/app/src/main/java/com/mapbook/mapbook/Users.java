@@ -48,9 +48,9 @@ public class Users extends AppCompatActivity implements View.OnClickListener {
                 // whenever data at this location is updated.
                 HashMap<String, ArrayList<String>> tempHist = (HashMap<String, ArrayList<String>>) dataSnapshot.getValue();
 //                ChatHist chatHist = dataSnapshot.getValue(ChatHist.class);
-                Log.d(TAG, "Value is " + dataSnapshot.getValue());
+//                Log.d(TAG, "Value is " + dataSnapshot.getValue());
 //                Log.d(TAG, "History is " + chatHist.toString());
-                Log.d(TAG, "History is " + tempHist.keySet());
+//                Log.d(TAG, "History is " + tempHist.keySet());
                 userList = new ArrayList<String>(tempHist.keySet());
                 tempList.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_expandable_list_item_1, userList));
             }
