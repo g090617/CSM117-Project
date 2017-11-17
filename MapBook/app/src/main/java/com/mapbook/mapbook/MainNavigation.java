@@ -198,33 +198,6 @@ public class MainNavigation extends AppCompatActivity
         }
     }
 
-    public void getBookInfoByBookID(String bookID){
-        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
-                "BookDB/" + bookID);
-
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                BookInfo value = dataSnapshot.getValue(BookInfo.class);
-                Log.d(TAG, "Book title: " + value.title + "\n" +
-                        "Author: " + value.author + "\n" +
-                        "Publisher: " + value.publisher + "\n" +
-                        "Zip code : " + value.zipCode);
-                if(value.status.equals("SELL"))
-                    books.add(value.title);
-                setListAdapter(new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_list_item_1,books));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
     private void enableLocation() {
         if (!(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED)) {
