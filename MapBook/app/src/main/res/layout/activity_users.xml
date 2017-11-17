@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="com.mapbook.mapbook.CreateActivity">
+    tools:context="com.mapbook.mapbook.Users">
 
     <TextView
         android:id="@+id/noUsersText"
