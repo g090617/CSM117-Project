@@ -124,12 +124,12 @@ public class Chat extends AppCompatActivity {
 
         if (type == 1) {
             lp2.gravity = Gravity.END;
-            textView.setBackgroundResource(R.mipmap.bubble_out);
+            textView.setBackgroundResource(R.mipmap.bubble_in);
             textView.getBackground().setAlpha(150);
             textView.setTextSize(18);
         } else {
             lp2.gravity = Gravity.START;
-            textView.setBackgroundResource(R.mipmap.bubble_in);
+            textView.setBackgroundResource(R.mipmap.bubble_out);
             textView.getBackground().setAlpha(150);
             textView.setTextSize(18);
         }
