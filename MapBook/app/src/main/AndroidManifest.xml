@@ -42,7 +42,9 @@
         <activity android:name=".SearchActivity" />
         <activity
             android:name=".ViewSaleActivity"
-            android:label="@string/title_activity_view_sale"></activity>
+            android:label="@string/title_activity_view_sale" />
+        <activity android:name=".Chat" />
+        <activity android:name=".Users"></activity>
     </application>
 
 </manifest>
