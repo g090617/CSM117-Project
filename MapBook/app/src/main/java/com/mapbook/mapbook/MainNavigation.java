@@ -40,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class MainNavigation extends AppCompatActivity
     private BookInfo bookCreated;
     private FirebaseAuth mAuth;
     private HashMap<Marker, BookInfo> markerBookInfoHashMap = new HashMap<>();
+    private ArrayList<BookInfo> bookInfos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,9 +205,68 @@ public class MainNavigation extends AppCompatActivity
         if (zip != null) {
             String title = intent.getStringExtra("title");
             if (title == null) {
-
+                getBookInfoByZip(zip);
             }
         }
+    }
+
+    public void getBookInfoByBookID(String bookID) {
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "BookDB/" + bookID);
+        final MainNavigation context = this;
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                BookInfo value = dataSnapshot.getValue(BookInfo.class);
+                Log.d("ttttag", "Book title: " + value.title + "\n" +
+                        "Author: " + value.author + "\n" +
+                        "Publisher: " + value.publisher + "\n" +
+                        "Zip code : " + value.zipCode);
+               // if (value.status.equals("SELL")) {
+                    bookInfos.add(value);
+                    LatLng latLng = new LatLng(Double.parseDouble(value.latitude), Double.parseDouble(value.longtitude));
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("click here to check book information"));
+                    mMap.setOnInfoWindowClickListener(context);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+                    markerBookInfoHashMap.put(marker, bookCreated);
+               // }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    public void getBookInfoByZip(String zip) {
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "ZipCodeBook/" + zip);
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                ZipCodeBook value = new ZipCodeBook();
+                value.zipBookMap = (HashMap)dataSnapshot.getValue();
+                for(final String key : value.zipBookMap.keySet()){
+                    getBookInfoByBookID(key);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
     private void enableLocation() {
