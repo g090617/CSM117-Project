@@ -40,6 +40,7 @@ public class SearchActivity extends AppCompatActivity {
 //        testingFunc(mAuth.getCurrentUser().getUid());
 //        getBookByZipCodeAndTitle(((EditText) findViewById(R.id.editZipcode)).getText().toString(),"Kjnkjnkjn");
         getUserInfoByUserID(mAuth.getCurrentUser().getUid());
+        getUserIDByBookID("-KzWsQmh_4S890E_T1sP");
     }
 
 
@@ -96,6 +97,14 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    public void getUserByBookID(String bookID){
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "users/");
+        userRef.orderByChild("bookIDMap").equalTo(bookID);
+
+
+    }
+
     public void getBookInfoByZipCode(final String zipCode){
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
                 "ZipCodeBook/" + zipCode);
@@ -135,6 +144,30 @@ public class SearchActivity extends AppCompatActivity {
                 for(final String key : value.bookIDMap.keySet()){
                     getBookInfoByBookID(key);
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+    }
+
+    public void getUserIDByBookID(String bookID){
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "BookToUser/" + bookID);
+//        userRef.orderByChild("title")
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String value = dataSnapshot.getValue(String.class);
+                Log.d(TAG, "getUserIDByBookID Value is: " + value);
+                EditText tempEdit = findViewById(R.id.editZipcode);
+                tempEdit.setText(value);
+
             }
 
             @Override

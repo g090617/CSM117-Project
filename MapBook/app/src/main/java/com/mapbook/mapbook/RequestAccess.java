@@ -63,7 +63,7 @@ public class RequestAccess extends  CreateActivity{
 
         addBookToLocation(newRef.getKey().toString(), zipCode);
 
-
+        addBookUserRef(newRef.getKey().toString(), userId);
     }
 
     public void addBookToBookDatabase(String bookID, String title, String author, String isbn,
@@ -219,6 +219,11 @@ public class RequestAccess extends  CreateActivity{
         });
         EditText tempEdit = findViewById(R.id.editText2);
         tempEdit.setText("tempUser.email");
+    }
+
+    public void addBookUserRef(String bookID, String userID){
+//        BookInfo book = new BookInfo(bookID, "Buy");
+        mDatabase.child("BookToUser").child(bookID).setValue(userID);
     }
 
 }
