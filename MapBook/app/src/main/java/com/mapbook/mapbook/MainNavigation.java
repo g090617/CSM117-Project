@@ -203,21 +203,15 @@ public class MainNavigation extends AppCompatActivity
         }
 
         String zip = intent.getStringExtra("zip");
-        if(zip == null || zip.length() == 0) {
-            zip = "90095";
-        }
-        else {
-            Log.w(TAG, "print zip here in the main_navi");
-            Log.w(TAG, zip);
-        }
+
 
 
 
         if (zip != null) {
             String title = intent.getStringExtra("title");
-            //if (title == null) {
+            if (title.equals("")) {
                 getBookInfoByZipCode(zip);
-            //}
+            }
         }
     }
 
@@ -243,6 +237,7 @@ public class MainNavigation extends AppCompatActivity
                 mMap.setOnInfoWindowLongClickListener(context);
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+                bookInfos.add(value);
                 markerBookInfoHashMap.put(marker, value);
             }
 
@@ -265,6 +260,7 @@ public class MainNavigation extends AppCompatActivity
                 ZipCodeBook value = new ZipCodeBook();
                 value.zipBookMap = (HashMap)dataSnapshot.getValue();
                 //Log.d(TAG, "Book ID in zip code " + zipCode + " are " + value.toString());
+                Log.i("ttttag", String.valueOf(value.zipBookMap.keySet().size()));
                 for(final String key : value.zipBookMap.keySet()){
                     //Log.w(TAG, "Print string key here, see if we actually have the value");
                     //Log.w(TAG, key);
