@@ -89,12 +89,12 @@ public class CreateActivity extends AppCompatActivity {
 
                 Snackbar.make(view, "Added to database", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-
-            BookInfo bookCreated = new BookInfo(null, title, name, isbn, pub, subject, price, null, zip,
+                BookInfo bookCreated = new BookInfo(null, title, name, isbn, pub, subject, price, null, zip,
                     String.valueOf(location.longitude), String.valueOf(location.latitude));
 
             Intent intent = new Intent(getApplicationContext(), MainNavigation.class);
             intent.putExtra("bookCreated", bookCreated);
+
             startActivity(intent);
             }
         });

@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -137,7 +138,7 @@ public class MainNavigation extends AppCompatActivity
             Intent intent = new Intent(this, Users.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-            Intent intent = new Intent(this, Chat.class);
+            Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_logout) {
@@ -202,39 +203,47 @@ public class MainNavigation extends AppCompatActivity
         }
 
         String zip = intent.getStringExtra("zip");
+        if(zip == null || zip.length() == 0) {
+            zip = "90095";
+        }
+        else {
+            Log.w(TAG, "print zip here in the main_navi");
+            Log.w(TAG, zip);
+        }
+
+
+
         if (zip != null) {
             String title = intent.getStringExtra("title");
-            if (title == null) {
-                getBookInfoByZip(zip);
-            }
+            //if (title == null) {
+                getBookInfoByZipCode(zip);
+            //}
         }
     }
 
-    public void getBookInfoByBookID(String bookID) {
+
+    public void getBookInfoByBookID(String bookID){
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
                 "BookDB/" + bookID);
         final MainNavigation context = this;
-
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 BookInfo value = dataSnapshot.getValue(BookInfo.class);
-                Log.d("ttttag", "Book title: " + value.title + "\n" +
+
+                Log.d(TAG, "Book title: " + value.title + "\n" +
                         "Author: " + value.author + "\n" +
                         "Publisher: " + value.publisher + "\n" +
                         "Zip code : " + value.zipCode);
-               // if (value.status.equals("SELL")) {
-                    bookInfos.add(value);
-                    LatLng latLng = new LatLng(Double.parseDouble(value.latitude), Double.parseDouble(value.longtitude));
-                    Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("click here to check book information"));
-                    mMap.setOnInfoWindowClickListener(context);
-                    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
-                    markerBookInfoHashMap.put(marker, bookCreated);
-               // }
-
+                LatLng latLng = new LatLng(Double.parseDouble(value.latitude), Double.parseDouble(value.longtitude));
+                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("click here to check book information"));
+                mMap.setOnInfoWindowClickListener(context);
+                mMap.setOnInfoWindowLongClickListener(context);
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+                markerBookInfoHashMap.put(marker, value);
             }
 
             @Override
@@ -243,30 +252,32 @@ public class MainNavigation extends AppCompatActivity
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+
     }
 
-    public void getBookInfoByZip(String zip) {
+    public void getBookInfoByZipCode(final String zipCode){
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
-                "ZipCodeBook/" + zip);
-
+                "ZipCodeBook/" + zipCode);
+        //Log.w(TAG, "step into get book info by zip code.");
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
                 ZipCodeBook value = new ZipCodeBook();
                 value.zipBookMap = (HashMap)dataSnapshot.getValue();
+                //Log.d(TAG, "Book ID in zip code " + zipCode + " are " + value.toString());
                 for(final String key : value.zipBookMap.keySet()){
+                    //Log.w(TAG, "Print string key here, see if we actually have the value");
+                    //Log.w(TAG, key);
                     getBookInfoByBookID(key);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+
     }
 
     private void enableLocation() {
@@ -293,22 +304,43 @@ public class MainNavigation extends AppCompatActivity
         }
     }
     public void onInfoWindowClick(Marker marker) {
+        if(marker != null)
+        Log.w(TAG, "marker is not null!");
+
+
         BookInfo bookInfo = markerBookInfoHashMap.get(marker);
-        Toast.makeText(this,
-                        "        Title: " + bookInfo.title + "\n" +
-                        "        Author: " + bookInfo.author + "\n" +
-                        "        ISBN: " + bookInfo.isbn + "\n" +
-                        "        Subject: " + bookInfo.subject + "\n" +
-                        "        Price: " + bookInfo.price + "\n",
-                Toast.LENGTH_LONG).show();
+        if(bookInfo != null){
+        //    Log.w(TAG, "bookInfo is not null!");
+        //    Log.w(TAG, "bookInfo longtitude here");
+        //    Log.w(TAG, bookInfo.longtitude);
+
+        //    Log.w(TAG, "bookInfo latitude here");
+        //    Log.w(TAG, bookInfo.latitude);
+
+       //     Log.w(TAG, "bookInfo title here");
+       //     Log.w(TAG, bookInfo.title);
+       //     Log.w(TAG, "bookInfo author here");
+      //      Log.w(TAG, bookInfo.author);
+      //      Log.w(TAG, "bookInfo isbn here");
+       //     Log.w(TAG, bookInfo.isbn);
+      //      Log.w(TAG, bookInfo.price);
+            Toast.makeText(this,
+                    "        Title: " + bookInfo.title + "\n" +
+                            "        Author: " + bookInfo.author + "\n" +
+                            "        ISBN: " + bookInfo.isbn + "\n" +
+                            "        Subject: " + bookInfo.subject + "\n" +
+                            "        Price: " + bookInfo.price + "\n",
+                    Toast.LENGTH_LONG).show();
+
+        }
+
+        else
+            Log.w(TAG, "bookInfo is null!");
+
     }
     public void onInfoWindowLongClick(Marker marker) {
-        Intent intent = new Intent(this, SearchActivity.class);
+        Intent intent = new Intent(this, MainNavigation.class);
         startActivity(intent);
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 }

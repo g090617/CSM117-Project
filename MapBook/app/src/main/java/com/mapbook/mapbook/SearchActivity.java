@@ -56,6 +56,12 @@ public class SearchActivity extends AppCompatActivity {
         String bookTitle = title.getText().toString();
         intent.putExtra("zip", zipcode);
         intent.putExtra("title", bookTitle);
+        Log.w(TAG, "on confirm print zip here");
+        if(zip != null)
+            Log.w(TAG, zipcode.toString());
+        else
+            Log.w(TAG, "print title here");
+        Log.w(TAG, bookTitle);
         startActivity(intent);
 
 //        getBookInfoByZipCode(((EditText) findViewById(R.id.editZipcode)).getText().toString());

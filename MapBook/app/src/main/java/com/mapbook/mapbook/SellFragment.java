@@ -25,12 +25,13 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
+import java.util.*;
 
 
 public class SellFragment extends ListFragment {
    ArrayList<String> books = new ArrayList<String>();
     private FirebaseAuth mAuth;
-
+    HashMap<String, BookInfo> bookInfoHashMap = new HashMap<>();
     // private OnFragmentInteractionListener mListener;
 
     public SellFragment() {
@@ -53,14 +54,20 @@ public class SellFragment extends ListFragment {
         getUserInfoByUserID(mAuth.getCurrentUser().getUid());
 //        Log.d(TAG, "BOOK 0" + books.get(0));
 
-
     }
     public void onListItemClick(ListView parent, View v,
                                 int position, long id)
     {
+        String index = books.get(position);
+        BookInfo bookInfo = bookInfoHashMap.get(index);
         Toast.makeText(getActivity(),
-                "You have selected " + books.get(position),
-                Toast.LENGTH_SHORT).show();
+                "You have selected " + books.get(position) + "\n"+
+                "        Title: " + bookInfo.title + "\n" +
+                        "        Author: " + bookInfo.author + "\n" +
+                        "        ISBN: " + bookInfo.isbn + "\n" +
+                        "        Subject: " + bookInfo.subject + "\n" +
+                        "        Price: " + bookInfo.price + "\n",
+                Toast.LENGTH_LONG).show();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,8 +128,10 @@ public void getBookInfoByBookID(String bookID){
                     "Author: " + value.author + "\n" +
                     "Publisher: " + value.publisher + "\n" +
                     "Zip code : " + value.zipCode);
-            if(value.status.equals("SELL"))
+            if(value.status.equals("SELL")) {
                 books.add(value.title);
+                bookInfoHashMap.put(value.title, value);
+            }
             setListAdapter(new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_list_item_1,books));
         }

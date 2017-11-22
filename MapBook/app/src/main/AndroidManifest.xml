@@ -44,7 +44,9 @@
             android:name=".ViewSaleActivity"
             android:label="@string/title_activity_view_sale" />
         <activity android:name=".Chat" />
-        <activity android:name=".Users"></activity>
+        <activity android:name=".Users" />
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".DetailedBookInfoActivity"></activity>
     </application>
 
 </manifest>

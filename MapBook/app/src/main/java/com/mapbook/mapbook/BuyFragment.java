@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.*;
 
 import static android.content.ContentValues.TAG;
 
@@ -27,6 +28,7 @@ import static android.content.ContentValues.TAG;
 public class BuyFragment extends ListFragment {
     ArrayList<String> books = new ArrayList<String>();
     private FirebaseAuth mAuth;
+    HashMap<String, BookInfo> bookInfoHashMap = new HashMap<>();
    // private OnFragmentInteractionListener mListener;
 
     public BuyFragment() {
@@ -37,7 +39,6 @@ public class BuyFragment extends ListFragment {
     // TODO: Rename and change types and number of parameters
     public static BuyFragment newInstance() {
         BuyFragment fragment = new BuyFragment();
-
         return fragment;
     }
 
@@ -55,9 +56,16 @@ public class BuyFragment extends ListFragment {
     public void onListItemClick(ListView parent, View v,
                                 int position, long id)
     {
+        String index = books.get(position);
+        BookInfo bookInfo = bookInfoHashMap.get(index);
         Toast.makeText(getActivity(),
-                "You have selected " + books.get(position),
-                Toast.LENGTH_SHORT).show();
+                "You have selected " + books.get(position) + "\n"+
+                "        Title: " + bookInfo.title + "\n" +
+                        "        Author: " + bookInfo.author + "\n" +
+                        "        ISBN: " + bookInfo.isbn + "\n" +
+                        "        Subject: " + bookInfo.subject + "\n" +
+                        "        Price: " + bookInfo.price + "\n",
+                Toast.LENGTH_LONG).show();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,8 +128,11 @@ public void getBookInfoByBookID(String bookID){
                     "Author: " + value.author + "\n" +
                     "Publisher: " + value.publisher + "\n" +
                     "Zip code : " + value.zipCode);
-            if(value.status.equals("BUY"))
+            if(value.status.equals("BUY")){
                 books.add(value.title);
+                bookInfoHashMap.put(value.title, value);
+            }
+
             setListAdapter(new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_list_item_1,books));
         }
