@@ -41,6 +41,7 @@ public class Chat extends AppCompatActivity {
     Toolbar toolbar;
     FirebaseAuth mAuth;
     DatabaseReference messageRef;
+    DatabaseReference messageRefOpposite;
     User chatTo;
     ArrayList<String> chatHistory;
 
@@ -62,16 +63,19 @@ public class Chat extends AppCompatActivity {
         Log.d(TAG, "userID is " + userID);
         toolbar.setTitle(userID);
         messageRef = FirebaseDatabase.getInstance().getReference("Chat/user2/");
+        messageRefOpposite = FirebaseDatabase.getInstance().getReference("Chat/user1/");
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String messageText = "0" + messageArea.getText().toString();
                 DatabaseReference tempRef = FirebaseDatabase.getInstance().getReference("Chat/user2/user1");
+                DatabaseReference tempRefOpposite = FirebaseDatabase.getInstance().getReference("Chat/user1/user2");
                 if (!messageText.equals("")) {
 
                     ArrayList<String> tempList = chatHistory;
                     tempList.add(messageText);
                     tempRef.setValue(tempList);
+                    tempRefOpposite.setValue(tempList);
                     addMessageBox("You:\n" + messageText.substring(1), 1);
 //
                     messageArea.setText("");
@@ -99,7 +103,19 @@ public class Chat extends AppCompatActivity {
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Log.d(TAG, "Value is " + dataSnapshot.getValue());
 
+                    Log.d(TAG, "snapshot key is " + dataSnapshot.getKey());
+                    if(dataSnapshot.getKey().toString().equals(userID)) {
+                        chatHistory = (ArrayList<String>) dataSnapshot.getValue();
+                        for (int i = 0; i < chatHistory.size(); i++) {
+                            Log.d(TAG, "In loop");
+                            if (chatHistory.get(i).charAt(0) == '0')
+                                addMessageBox("You:\n" + chatHistory.get(i).substring(1), 1);
+                            else
+                                addMessageBox(userID + ":\n" + chatHistory.get(i).substring(1), 2);
+                        }
+                    }
                 }
 
                 @Override
