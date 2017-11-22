@@ -67,7 +67,11 @@ public class MainNavigation extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-        buildGoogleApiClient();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
 
         setContentView(R.layout.activity_main_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -95,12 +99,12 @@ public class MainNavigation extends AppCompatActivity
     /**
      * Creating google api client object
      * */
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API).build();
-    }
+//    protected synchronized void buildGoogleApiClient() {
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .addApi(LocationServices.API).build();
+//    }
 
     @Override
     public void onBackPressed() {
@@ -307,24 +311,7 @@ public class MainNavigation extends AppCompatActivity
             //Log.i("jin","jin1");
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(this);
-//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                return;
-//            }
-//            mLastLocation = LocationServices.FusedLocationApi
-//                    .getLastLocation(mGoogleApiClient);
-//            while(mLastLocation == null) {
-//                mLastLocation = LocationServices.FusedLocationApi
-//                        .getLastLocation(mGoogleApiClient);
-//            }
-//            Log.i("ttttag", mLastLocation.toString());
-//            if (mLastLocation != null) {
-//                double latitude = mLastLocation.getLatitude();
-//                double longitude = mLastLocation.getLongitude();
-//                LatLng latLng = new LatLng(latitude, longitude);
-//                Log.i("ttttag", "get location");
-//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-//            }
+            mGoogleApiClient.connect();
         }
     }
 
@@ -382,7 +369,19 @@ public class MainNavigation extends AppCompatActivity
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        Log.i("ttttag", mLastLocation.toString());
+        if (mLastLocation != null) {
+            double latitude = mLastLocation.getLatitude();
+            double longitude = mLastLocation.getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+            Log.i("ttttag", "get location");
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+        }
     }
 
     @Override
