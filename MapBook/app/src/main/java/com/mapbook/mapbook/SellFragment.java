@@ -153,12 +153,10 @@ public void getBookInfoByBookID(String bookID){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User value = dataSnapshot.getValue(User.class);
-                Log.d(TAG, "Testing Value is: " + value.email + value.userID +
-                        value.bookIDMap.keySet().toString());
-//                EditText tempEdit = findViewById(R.id.editZipcode);
-//                tempEdit.setText(value.email);
-                for(final String key : value.bookIDMap.keySet()){
-                    getBookInfoByBookID(key);
+                if(value.bookIDMap != null) {
+                    for (final String key : value.bookIDMap.keySet()) {
+                        getBookInfoByBookID(key);
+                    }
                 }
             }
 
