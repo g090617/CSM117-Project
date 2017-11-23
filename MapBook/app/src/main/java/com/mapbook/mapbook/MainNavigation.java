@@ -25,7 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.os.Parcel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,6 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,7 @@ public class MainNavigation extends AppCompatActivity
     private BookInfo bookCreated;
     private FirebaseAuth mAuth;
     private HashMap<Marker, BookInfo> markerBookInfoHashMap = new HashMap<>();
+    private HashMap<String, Marker> markerIDtoMarkerHashMap = new HashMap<>();
     private ArrayList<BookInfo> bookInfos = new ArrayList<>();
 
     @Override
@@ -162,31 +164,6 @@ public class MainNavigation extends AppCompatActivity
         mMap.getUiSettings().setZoomControlsEnabled(true);
         enableLocation();
 
-//        Log.i("enter","before");
-//        Intent intent = getIntent();
-//        String location = intent.getStringExtra("location");
-//        if (location != null) {
-//            Log.i("enter","after");
-//            Log.i("enter", location);
-//            List<Address> addressList = null;
-//            if (location != null || !location.equals("")) {
-//                Geocoder geocoder = new Geocoder(this);
-//                try {
-//                    addressList = geocoder.getFromLocationName(location, 1);
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                Log.i("address", String.valueOf(addressList));
-//                Address address = addressList.get(0);
-//
-//                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-//                mMap.addMarker(new MarkerOptions().position(latLng).title("click here to get book information!"));
-//                mMap.setOnInfoWindowClickListener(this);
-//                mMap.setOnInfoWindowLongClickListener(this);
-//                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-//            }
-//        }
         markerBookInfoHashMap.clear();
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -203,15 +180,27 @@ public class MainNavigation extends AppCompatActivity
         }
 
         String zip = intent.getStringExtra("zip");
-
-
-
-
         if (zip != null) {
             String title = intent.getStringExtra("title");
-            if (title.equals("")) {
+            if (title == null || title.equals("")) {
                 getBookInfoByZipCode(zip);
             }
+        }
+        String bookStatusChanged = intent.getStringExtra("bookStatusChanges");
+        if(bookStatusChanged == null || bookStatusChanged.length() == 0){
+            Log.w(TAG, "Book's status has not changed");
+        } else {
+            Marker tmpMarker = markerIDtoMarkerHashMap.get(bookStatusChanged);
+            BookInfo tmpBook = markerBookInfoHashMap.get(tmpMarker);
+            if (tmpBook != null) {
+                Log.w(TAG, "get tmp book");
+                tmpBook.status = "SOLD";
+                Toast.makeText(this, "Book's status has changed to \"SOLD\"",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Log.w(TAG, "didnt get tmp book");
+            }
+
         }
     }
 
@@ -303,23 +292,8 @@ public class MainNavigation extends AppCompatActivity
         if(marker != null)
         Log.w(TAG, "marker is not null!");
 
-
         BookInfo bookInfo = markerBookInfoHashMap.get(marker);
         if(bookInfo != null){
-        //    Log.w(TAG, "bookInfo is not null!");
-        //    Log.w(TAG, "bookInfo longtitude here");
-        //    Log.w(TAG, bookInfo.longtitude);
-
-        //    Log.w(TAG, "bookInfo latitude here");
-        //    Log.w(TAG, bookInfo.latitude);
-
-       //     Log.w(TAG, "bookInfo title here");
-       //     Log.w(TAG, bookInfo.title);
-       //     Log.w(TAG, "bookInfo author here");
-      //      Log.w(TAG, bookInfo.author);
-      //      Log.w(TAG, "bookInfo isbn here");
-       //     Log.w(TAG, bookInfo.isbn);
-      //      Log.w(TAG, bookInfo.price);
             Toast.makeText(this,
                     "        Title: " + bookInfo.title + "\n" +
                             "        Author: " + bookInfo.author + "\n" +
@@ -327,7 +301,6 @@ public class MainNavigation extends AppCompatActivity
                             "        Subject: " + bookInfo.subject + "\n" +
                             "        Price: " + bookInfo.price + "\n",
                     Toast.LENGTH_LONG).show();
-
         }
 
         else
@@ -335,8 +308,19 @@ public class MainNavigation extends AppCompatActivity
 
     }
     public void onInfoWindowLongClick(Marker marker) {
-        Intent intent = new Intent(this, MainNavigation.class);
+        Intent intent = new Intent(this, DetailedBookInfoActivity.class);
+        BookInfo book = markerBookInfoHashMap.get(marker);
+        intent.putExtra("zipCode", book.zipCode);
+        intent.putExtra("title", book.title);
+        intent.putExtra("author", book.author);
+        intent.putExtra("title", book.title);
+        intent.putExtra("publisher", book.publisher);
+        intent.putExtra("subject", book.subject);
+        intent.putExtra("price", book.price);
+        intent.putExtra("markerId", String.valueOf(marker));
+        markerIDtoMarkerHashMap.put(String.valueOf(marker), marker);
         startActivity(intent);
+
     }
 
 }
