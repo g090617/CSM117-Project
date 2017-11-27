@@ -39,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
         //mAuth = FirebaseAuth.getInstance();
 //        testingFunc(mAuth.getCurrentUser().getUid());
 //        getBookByZipCodeAndTitle(((EditText) findViewById(R.id.editZipcode)).getText().toString(),"Kjnkjnkjn");
-        //getUserInfoByUserID(mAuth.getCurrentUser().getUid());
+
     }
 
 
