@@ -353,7 +353,7 @@ public class MainNavigation extends AppCompatActivity
             return;
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        Log.i("ttttag", mLastLocation.toString());
+        //Log.i("ttttag", mLastLocation.toString());
         if (mLastLocation != null) {
             double latitude = mLastLocation.getLatitude();
             double longitude = mLastLocation.getLongitude();
