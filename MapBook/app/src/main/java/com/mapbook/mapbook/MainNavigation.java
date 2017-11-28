@@ -206,7 +206,11 @@ public class MainNavigation extends AppCompatActivity
         if (zip != null) {
             String title = intent.getStringExtra("title");
             if (title == null || title.equals("")) {
+                Log.w(TAG, "search by zip");
                 getBookInfoByZipCode(zip);
+            } else {
+                Log.w(TAG, "search by zip and subject");
+                getBookInfoByZipCodeAndSubject(zip, title);
             }
         }
         String bookStatusChanged = intent.getStringExtra("bookStatusChanges");
@@ -228,7 +232,7 @@ public class MainNavigation extends AppCompatActivity
     }
 
 
-    public void getBookInfoByBookID(String bookID){
+    public void getBookInfoByBookID(String bookID, final String subject){
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
                 "BookDB/" + bookID);
         final MainNavigation context = this;
@@ -243,14 +247,16 @@ public class MainNavigation extends AppCompatActivity
                         "Author: " + value.author + "\n" +
                         "Publisher: " + value.publisher + "\n" +
                         "Zip code : " + value.zipCode);
-                LatLng latLng = new LatLng(Double.parseDouble(value.latitude), Double.parseDouble(value.longtitude));
-                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("click here to check book information"));
-                mMap.setOnInfoWindowClickListener(context);
-                mMap.setOnInfoWindowLongClickListener(context);
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
-                bookInfos.add(value);
-                markerBookInfoHashMap.put(marker, value);
+                if(subject.length() == 0 || value.title.toUpperCase().equals(subject.toUpperCase())){
+                    LatLng latLng = new LatLng(Double.parseDouble(value.latitude), Double.parseDouble(value.longtitude));
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("click here to check book information"));
+                    mMap.setOnInfoWindowClickListener(context);
+                    mMap.setOnInfoWindowLongClickListener(context);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+                    bookInfos.add(value);
+                    markerBookInfoHashMap.put(marker, value);
+                }
             }
 
             @Override
@@ -277,7 +283,37 @@ public class MainNavigation extends AppCompatActivity
                     for (final String key : value.zipBookMap.keySet()) {
                         //Log.w(TAG, "Print string key here, see if we actually have the value");
                         //Log.w(TAG, key);
-                        getBookInfoByBookID(key);
+                        getBookInfoByBookID(key, "");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+    }
+
+
+
+    public void getBookInfoByZipCodeAndSubject(final String zipCode, final String subject){
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "ZipCodeBook/" + zipCode);
+        //Log.w(TAG, "step into get book info by zip code.");
+        ValueEventListener valueEventListener = userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ZipCodeBook value = new ZipCodeBook();
+                value.zipBookMap = (HashMap) dataSnapshot.getValue();
+                //Log.d(TAG, "Book ID in zip code " + zipCode + " are " + value.toString());
+                //Log.i("ttttag", String.valueOf(value.zipBookMap.keySet().size()));
+                if (value.zipBookMap != null && value.zipBookMap.keySet() != null) {
+                    for (final String key : value.zipBookMap.keySet()) {
+                        //Log.w(TAG, "Print string key here, see if we actually have the value");
+                        //Log.w(TAG, key);
+                        getBookInfoByBookID(key, subject);
                     }
                 }
             }
