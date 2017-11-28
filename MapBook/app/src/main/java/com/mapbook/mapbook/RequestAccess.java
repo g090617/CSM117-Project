@@ -65,7 +65,7 @@ public class RequestAccess extends  CreateActivity{
 
         addBookUserRef(newRef.getKey().toString(), userId);
 
-        changeStatus(newRef.getKey().toString(), "RESERVED");
+//        changeStatus(newRef.getKey().toString(), "RESERVED");
     }
 
     public void addBookToBookDatabase(String bookID, String title, String author, String isbn,

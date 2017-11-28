@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +62,8 @@ public class Chat extends AppCompatActivity {
         Intent myIntent = getIntent();
         final String userID = myIntent.getStringExtra("userID");
         Log.d(TAG, "userID is " + userID);
-        toolbar.setTitle(userID);
+        setTitleBarEmail(userID);
+
         messageRef = FirebaseDatabase.getInstance().getReference("Chat/user2/");
         messageRefOpposite = FirebaseDatabase.getInstance().getReference("Chat/user1/");
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +139,29 @@ public class Chat extends AppCompatActivity {
             startActivity(new Intent(Chat.this, Chat.class));
 
         }
+    }
+
+    public void setTitleBarEmail(String userID){
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "users/" + userID);
+//        userRef.orderByChild("title")
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User value = dataSnapshot.getValue(User.class);
+                toolbar.setTitle(value.email);
+//                EditText tempEdit = findViewById(R.id.editZipcode);
+//                tempEdit.setText(value.email);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
     }
 
     public void addMessageBox(String message, int type) {
