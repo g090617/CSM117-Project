@@ -36,7 +36,7 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
     private String userID;
     private String bookID;
     private String markerID;
-
+    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +79,17 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
         if(new String(userID).equals(mAuth.getCurrentUser().getUid())){
             display = "You can't buy books owned by yourself";
         } else {
-            display = "The status of the book has changed to SOLD" ;
+            changeStatus(bookID, "RESERVED");
+            display = "The status of the book has changed" ;
         }
         TextView lblTitle=(TextView)findViewById(R.id.lblTitle);
         lblTitle.setText(display);
     }
+
+    public void changeStatus(String bookID, String newStatus){
+        mDatabase.child("BookDB").child(bookID).child("status").setValue(newStatus);
+    }
+
     public void onContactSellerButton(View v) {
         //getUserInfoByUserID(mAuth.getCurrentUser().getUid());
 

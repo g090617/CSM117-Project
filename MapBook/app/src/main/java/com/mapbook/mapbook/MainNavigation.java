@@ -191,7 +191,7 @@ public class MainNavigation extends AppCompatActivity
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             bookCreated = intent.getExtras().getParcelable("bookCreated");
-            if (bookCreated != null) {
+            if (bookCreated != null && bookCreated.status.toUpperCase() == "SELL") {
                 LatLng latLng = new LatLng(Double.parseDouble(bookCreated.latitude), Double.parseDouble(bookCreated.longtitude));
                 Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("click here to check book information"));
                 mMap.setOnInfoWindowClickListener(this);
