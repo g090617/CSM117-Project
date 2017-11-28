@@ -66,7 +66,7 @@ public class CreateActivity extends AppCompatActivity {
             public void onClick(View view) {
 
             final EditText titleField = (EditText)findViewById(R.id.editText2);
-            String title = titleField.getText().toString();
+            String title = titleField.getText().toString().toUpperCase();
             final EditText nameField = (EditText)findViewById(R.id.editText3);
             String name = nameField.getText().toString();
             final EditText isbnField = (EditText)findViewById(R.id.editText5);
