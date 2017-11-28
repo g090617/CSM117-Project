@@ -73,7 +73,14 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
         //intent.putExtra("zip", zipCode);
         //Log.w(TAG, "send book status change signal");
         //startActivity(intent);
-        String display = "The status of the book has changed to SOLD" ;
+        String display = "";
+        Log.w(TAG, "sellerID of the book is" + userID);
+        Log.w(TAG, "buyerID of the book is" + mAuth.getCurrentUser().getUid());
+        if(new String(userID).equals(mAuth.getCurrentUser().getUid())){
+            display = "You can't buy books owned by yourself";
+        } else {
+            display = "The status of the book has changed to SOLD" ;
+        }
         TextView lblTitle=(TextView)findViewById(R.id.lblTitle);
         lblTitle.setText(display);
     }
