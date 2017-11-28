@@ -64,6 +64,8 @@ public class RequestAccess extends  CreateActivity{
         addBookToLocation(newRef.getKey().toString(), zipCode);
 
         addBookUserRef(newRef.getKey().toString(), userId);
+
+        changeStatus(newRef.getKey().toString(), "RESERVED");
     }
 
     public void addBookToBookDatabase(String bookID, String title, String author, String isbn,
@@ -73,6 +75,10 @@ public class RequestAccess extends  CreateActivity{
         BookInfo book = new BookInfo(bookID, title, author, isbn, publisher,
                 subject, price, status, zipCode, longtitude, latitude);
         mDatabase.child("BookDB").child(bookID).setValue(book);
+    }
+
+    public void changeStatus(String bookID, String newStatus){
+        mDatabase.child("BookDB").child(bookID).child("status").setValue(newStatus);
     }
 
     public void addBookToLocation(String bookID, String zipCode){
