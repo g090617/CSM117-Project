@@ -97,7 +97,7 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
 
         //getUserInfoByUserID(userID);
         Intent intent = new Intent(this, Chat.class);
-        intent.putExtra("sellerMail", sellerMail);
+        intent.putExtra("userID", userID);
         Log.d(TAG, "Book id: " + bookID + "\n" +
                 "userID: " + userID + "\n" +
                 "sellerMail: " +  sellerMail);
