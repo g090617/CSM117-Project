@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import android.widget.ListView;
 
@@ -26,11 +28,12 @@ import static android.content.ContentValues.TAG;
 
 
 public class BuyFragment extends ListFragment {
-    ArrayList<String> books = new ArrayList<String>();
+    List<String> books = new ArrayList<String>();
+    List<String> status = new ArrayList<String>();
     private FirebaseAuth mAuth;
     HashMap<String, BookInfo> bookInfoHashMap = new HashMap<>();
    // private OnFragmentInteractionListener mListener;
-
+    public Button changeBtn;
     public BuyFragment() {
         // Required empty public constructor
     }
@@ -71,49 +74,13 @@ public class BuyFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_buy, container, false);
+        View view = inflater.inflate(R.layout.fragment_buy, container, false);
+        changeBtn = view.findViewById(R.id.button2);
+
+
+        return view;
     }
 
-
-
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-//
-//    /**
-//     * This interface must be implemented by activities that contain this
-//     * fragment to allow an interaction in this fragment to be communicated
-//     * to the activity and potentially other fragments contained in that
-//     * activity.
-//     * <p>
-//     * See the Android Training lesson <a href=
-//     * "http://developer.android.com/training/basics/fragments/communicating.html"
-//     * >Communicating with Other Fragments</a> for more information.
-//     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
 public void getBookInfoByBookID(String bookID){
     final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
             "BookDB/" + bookID);
@@ -130,11 +97,21 @@ public void getBookInfoByBookID(String bookID){
                     "Zip code : " + value.zipCode);
             if(value.status.equals("BUY")){
                 books.add(value.title);
+                status.add(value.status);
                 bookInfoHashMap.put(value.title, value);
             }
 
-            setListAdapter(new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_list_item_1,books));
+            List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
+            for(int i =0 ; i<books.size();i++){
+                Map<String,Object> listItem = new HashMap<String, Object>();
+                listItem.put("books", books.get(i));
+                listItem.put("status",status.get(i));
+                list.add(listItem);
+            }
+            SimpleAdapter adapter = new SimpleAdapter(getActivity(),list,
+                    R.layout.view_list_item,  new String[] { "books","status"},
+                    new int[] { R.id.booktitle, R.id.bookstatus });
+            setListAdapter(adapter);
         }
 
         @Override

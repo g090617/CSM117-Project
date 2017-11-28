@@ -7,14 +7,15 @@
     tools:context="com.mapbook.mapbook.SearchActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="343dp"
         android:layout_height="286dp"
+        android:layout_marginEnd="24dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="8dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="16dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="37dp"
             android:text="Enter book information here"
             android:textAlignment="viewStart"
@@ -22,21 +23,33 @@
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="18sp" />
 
-        <EditText
+        <Spinner
             android:id="@+id/editSubject"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:entries="@array/categories_array"
             android:hint="Subject"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/editText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <!--<EditText-->
+        <!--android:id="@+id/editSubject"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:hint="Subject"-->
+        <!--android:inputType="textPersonName"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/editText"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         <EditText
             android:id="@+id/editTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Title"
@@ -48,7 +61,7 @@
 
         <EditText
             android:id="@+id/editIsbn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="ISBN"
@@ -60,7 +73,7 @@
 
         <EditText
             android:id="@+id/editZipcode"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="58dp"
             android:ems="10"
             android:hint="Zip Code"
