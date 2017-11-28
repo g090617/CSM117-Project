@@ -266,17 +266,19 @@ public class MainNavigation extends AppCompatActivity
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
                 "ZipCodeBook/" + zipCode);
         //Log.w(TAG, "step into get book info by zip code.");
-        userRef.addValueEventListener(new ValueEventListener() {
+        ValueEventListener valueEventListener = userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ZipCodeBook value = new ZipCodeBook();
-                value.zipBookMap = (HashMap)dataSnapshot.getValue();
+                value.zipBookMap = (HashMap) dataSnapshot.getValue();
                 //Log.d(TAG, "Book ID in zip code " + zipCode + " are " + value.toString());
-                Log.i("ttttag", String.valueOf(value.zipBookMap.keySet().size()));
-                for(final String key : value.zipBookMap.keySet()){
-                    //Log.w(TAG, "Print string key here, see if we actually have the value");
-                    //Log.w(TAG, key);
-                    getBookInfoByBookID(key);
+                //Log.i("ttttag", String.valueOf(value.zipBookMap.keySet().size()));
+                if (value.zipBookMap != null && value.zipBookMap.keySet() != null) {
+                    for (final String key : value.zipBookMap.keySet()) {
+                        //Log.w(TAG, "Print string key here, see if we actually have the value");
+                        //Log.w(TAG, key);
+                        getBookInfoByBookID(key);
+                    }
                 }
             }
 
@@ -331,9 +333,14 @@ public class MainNavigation extends AppCompatActivity
             Log.w(TAG, "bookInfo is null!");
 
     }
+
+
     public void onInfoWindowLongClick(Marker marker) {
         Intent intent = new Intent(this, DetailedBookInfoActivity.class);
         BookInfo book = markerBookInfoHashMap.get(marker);
+       //12 getUserIDByBookID(book.bookID);
+        //getUserInfoByUserID();
+        intent.putExtra("bookID", book.bookID);
         intent.putExtra("zipCode", book.zipCode);
         intent.putExtra("title", book.title);
         intent.putExtra("author", book.author);
