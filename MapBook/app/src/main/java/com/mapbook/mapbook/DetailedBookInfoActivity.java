@@ -68,6 +68,7 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
     }
 
     public void onBuyButton(View v) {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         //Intent intent = new Intent(this, MainNavigation.class);
         //intent.putExtra("bookStatusChanges", markerID);
         //intent.putExtra("zip", zipCode);
@@ -79,15 +80,22 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
         if(new String(userID).equals(mAuth.getCurrentUser().getUid())){
             display = "You can't buy books owned by yourself";
         } else {
-            changeStatus(bookID, "RESERVED");
-            display = "The status of the book has changed" ;
+            Log.w(TAG, "bookID of the book is" + bookID);
+            if(changeStatus(bookID, "RESERVED")) {
+                display = "The status of the book has been changed";
+            } else {
+                display = "The status of the book has not been changed";
+            }
         }
         TextView lblTitle=(TextView)findViewById(R.id.lblTitle);
         lblTitle.setText(display);
     }
 
-    public void changeStatus(String bookID, String newStatus){
-        mDatabase.child("BookDB").child(bookID).child("status").setValue(newStatus);
+    public boolean changeStatus(String bookID, String newStatus){
+        if(mDatabase != null && mDatabase.child("BookDB") != null && mDatabase.child("BookDB").child(bookID) != null){
+            mDatabase.child("BookDB").child(bookID).child("status").setValue(newStatus);
+            return true;
+        }  else return false;
     }
 
     public void onContactSellerButton(View v) {
