@@ -98,6 +98,9 @@ public class Chat extends AppCompatActivity {
                                 addMessageBox("You:\n" + messageText.substring(1), 1);
 //
                                 messageArea.setText("");
+                                chatHistory.clear();
+                                oppoChatHistory.clear();
+                                layout.removeAllViews();
                             }
                         }
                         else{
@@ -113,8 +116,12 @@ public class Chat extends AppCompatActivity {
                                 tempRef1.child(myUID).child(userID).setValue(tempList);
                                 tempRef1.child(userID).child(myUID).setValue(tempList2);
                                 addMessageBox("You:\n" + messageText.substring(1), 1);
+
 //
                                 messageArea.setText("");
+                                chatHistory.clear();
+                                oppoChatHistory.clear();
+                                layout.removeAllViews();
                             }
                         }
                     }
@@ -178,7 +185,7 @@ public class Chat extends AppCompatActivity {
                         messageRef.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                Log.d(TAG, "Value is " + dataSnapshot.getValue());
+                                Log.d(TAG, "on Child added Value is " + dataSnapshot.getValue());
 
                                 Log.d(TAG, "snapshot key is " + dataSnapshot.getKey());
                                 if(dataSnapshot.getKey().toString().equals(userID)) {
@@ -190,12 +197,13 @@ public class Chat extends AppCompatActivity {
                                         else
                                             addMessageBox(oppositeEmail + ":\n" + chatHistory.get(i).substring(1), 2);
                                     }
+                                    scrollView.fullScroll(View.FOCUS_DOWN);
                                 }
                             }
 
                             @Override
                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                Log.d(TAG, "Value is " + dataSnapshot.getValue());
+                                Log.d(TAG, "on Child changed Value is " + dataSnapshot.getValue());
 
                                 Log.d(TAG, "snapshot key is " + dataSnapshot.getKey());
                                 if(dataSnapshot.getKey().toString().equals(userID)) {
@@ -207,6 +215,7 @@ public class Chat extends AppCompatActivity {
                                         else
                                             addMessageBox(oppositeEmail + ":\n" + chatHistory.get(i).substring(1), 2);
                                     }
+                                    scrollView.fullScroll(View.FOCUS_DOWN);
                                 }
                             }
 
