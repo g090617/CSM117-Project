@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,9 +29,11 @@ public class Users extends AppCompatActivity implements View.OnClickListener {
 
     private Button go_back_button;
     private ListView tempList;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
-            "Chat/user2/");
+            "Chat/" + mAuth.getCurrentUser().getUid());
     ArrayList<String> userList = new ArrayList<>();
+    ArrayList<String> userEmailList = new ArrayList<>();
 
     private ArrayAdapter<String> listAdapter;
     @Override
@@ -52,7 +55,10 @@ public class Users extends AppCompatActivity implements View.OnClickListener {
 //                Log.d(TAG, "History is " + chatHist.toString());
 //                Log.d(TAG, "History is " + tempHist.keySet());
                 userList = new ArrayList<String>(tempHist.keySet());
-                tempList.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_expandable_list_item_1, userList));
+                for(String uid: userList){
+                    getUserInfoByUserID(uid);
+                }
+
             }
 
             @Override
@@ -72,7 +78,8 @@ public class Users extends AppCompatActivity implements View.OnClickListener {
                 final String checkChild = userList.get(position);
                 Intent myIntent = new Intent(Users.this, Chat.class);
                 TextView tempText = (TextView)tempList.getChildAt(position);
-                myIntent.putExtra("userID", tempText.getText().toString());
+                String userID = userList.get(userEmailList.indexOf(tempText.getText().toString()));
+                myIntent.putExtra("userID", userID);
                 startActivity(myIntent);
 //                startActivity(new Intent(Users.this, Chat.class));
             }
@@ -90,5 +97,39 @@ public class Users extends AppCompatActivity implements View.OnClickListener {
             default:
                 return;
         }
+    }
+
+    public void getUserInfoByUserID(final String userID){
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(
+                "users/" + userID);
+//        userRef.orderByChild("title")
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User value = dataSnapshot.getValue(User.class);
+                Log.d(TAG, "getUserInfoByUserID testing Value user id is: " + userID);
+                Log.d(TAG, "getUserInfoByUserID testing Value user class is: " + value);
+                Log.d(TAG, "getUserInfoByUserID testing Value seller email is: " + value.email);
+
+                userEmailList.add(value.email);
+                tempList.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_expandable_list_item_1, userEmailList));
+                //Log.d(TAG, "Testing Value is: " + value.email + value.userID +
+                //        value.bookIDMap.keySet().toString());
+                //EditText tempEdit = findViewById(R.id.editZipcode);
+                //tempEdit.setText(value.email);
+                //for(final String key : value.bookIDMap.keySet()){
+                //    getBookInfoByBookID(key);
+                //}
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
     }
 }
