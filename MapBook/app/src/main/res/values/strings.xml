@@ -33,4 +33,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="githublink">Our Github Repository:   <a href = "https://github.com/g090617/CSM117-Project">here</a></string>
 </resources>
