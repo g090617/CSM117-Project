@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -30,9 +31,12 @@ import static android.content.ContentValues.TAG;
 import java.util.*;
 
 
-public class SellFragment extends ListFragment {
+public class SellFragment extends Fragment {
    List<String> books = new ArrayList<String>();
    List<String> status = new ArrayList<String> ();
+   List<String> id = new ArrayList<String>();
+   ListView SellList;
+
     private FirebaseAuth mAuth;
     HashMap<String, BookInfo> bookInfoHashMap = new HashMap<>();
     // private OnFragmentInteractionListener mListener;
@@ -80,7 +84,9 @@ public class SellFragment extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sell, container, false);
+        SellList= view.findViewById(R.id.sellList);
         changeBtn = (Button)view.findViewById(R.id.button2);
+
         return view;
     }
 public void getBookInfoByBookID(String bookID){
@@ -96,23 +102,31 @@ public void getBookInfoByBookID(String bookID){
             Log.d(TAG, "Book title: " + value.title + "\n" +
                     "Author: " + value.author + "\n" +
                     "Publisher: " + value.publisher + "\n" +
-                    "Zip code : " + value.zipCode);
-            if(value.status.equals("SELL")) {
-                books.add(value.title);
-                status.add(value.status);
-                bookInfoHashMap.put(value.title, value);
-            }
-            List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
-            for(int i =0 ; i<books.size();i++){
-                Map<String,Object> listItem = new HashMap<String, Object>();
-                listItem.put("books", books.get(i));
-                listItem.put("status",status.get(i));
-                list.add(listItem);
-            }
-            SimpleAdapter adapter = new SimpleAdapter(getActivity(),list,
-                    R.layout.view_list_item,  new String[] { "books","status"},
-                    new int[] { R.id.booktitle, R.id.bookstatus });
-            setListAdapter(adapter);
+                    "Zip code : " + value.zipCode+"\n" +
+                    "Status : " + value.status);
+//           if(value.status.equals("SOLD")) {
+
+               books.add(value.title);
+               status.add(value.status);
+               id.add(value.bookID);
+               bookInfoHashMap.put(value.title, value);
+            // place reserved book in list with button
+//            List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
+//            Log.d(TAG, "res books SIZE " + books.size()+"\n");
+//            for(int i =0 ; i<books.size();i++){
+//                Map<String,Object> listItem = new HashMap<String, Object>();
+//                listItem.put("books", books.get(i));
+//                listItem.put("status",status.get(i));
+//                list.add(listItem);
+//            }
+//            SimpleAdapter res_adapter = new SimpleAdapter(getActivity(),list,
+//                    R.layout.view_list_item,  new String[] { "books","status"},
+//                    new int[] { R.id.resbooktitle, R.id.resbookstatus });
+ //           setListAdapter(res_adapter);
+
+            ListAdapter adapter = new BookListAdapter(books,status,id,getActivity());
+            SellList.setAdapter(adapter);
+
         }
 
         @Override

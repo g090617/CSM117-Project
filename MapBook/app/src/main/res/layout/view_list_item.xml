@@ -17,7 +17,7 @@
         android:id="@+id/book_container">
 
         <TextView
-            android:id="@+id/booktitle"
+            android:id="@+id/resbooktitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -29,27 +29,39 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
-            android:id="@+id/bookstatus"
+            android:id="@+id/resbookstatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/button2"
-            android:layout_alignBottom="@+id/button2"
-            android:layout_marginEnd="14dp"
-            android:layout_marginRight="14dp"
-            android:layout_toLeftOf="@+id/button2"
-            android:layout_toStartOf="@+id/button2"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/buttonSell"
+            android:layout_toStartOf="@+id/buttonSell"
             android:text="Status" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonSell"
+            style="@android:style/Widget.DeviceDefault.Light.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/buttonSold"
+            android:layout_toStartOf="@+id/buttonSold"
+            android:text="Selling"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+
+        <Button
+            android:id="@+id/buttonSold"
             style="@android:style/Widget.DeviceDefault.Light.Button.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="Change Status"
-            android:textAppearance="@android:style/TextAppearance.Widget.PopupMenu.Small" />
+            android:layout_marginEnd="13dp"
+            android:layout_marginRight="13dp"
+            android:text=" Sold! "
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
 
 
     </RelativeLayout>
