@@ -113,7 +113,8 @@ public class Users extends AppCompatActivity implements View.OnClickListener {
                 Log.d(TAG, "getUserInfoByUserID testing Value user class is: " + value);
                 Log.d(TAG, "getUserInfoByUserID testing Value seller email is: " + value.email);
 
-                userEmailList.add(value.email);
+                if(!userEmailList.contains(value.email))
+                    userEmailList.add(value.email);
                 tempList.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
                         android.R.layout.simple_expandable_list_item_1, userEmailList));
                 //Log.d(TAG, "Testing Value is: " + value.email + value.userID +
