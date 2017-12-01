@@ -81,22 +81,22 @@ public class CreateActivity extends AppCompatActivity {
             final EditText nameField = (EditText)findViewById(R.id.editText3);
             String name = nameField.getText().toString();
             if(name.isEmpty()){
-                name = "unknown";
+                name = "N/A";
             }
             final EditText isbnField = (EditText)findViewById(R.id.editText5);
             String isbn  = isbnField.getText().toString();
             if (isbn.isEmpty()){
-                isbn = "unknown";
+                isbn = "N/A";
             }
             final EditText pubField = (EditText)findViewById(R.id.editText6);
             String pub = pubField.getText().toString();
                 if (pub.isEmpty()){
-                    pub = "unknown";
+                    pub = "N/A";
                 }
             final EditText priceField = (EditText)findViewById(R.id.editText8);
             String price = priceField.getText().toString();
                 if(price.isEmpty()){
-                    price = "0";
+                    price = "N/A";
                 }
 
                 if(location == null){
