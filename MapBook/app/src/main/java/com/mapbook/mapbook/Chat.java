@@ -97,10 +97,10 @@ public class Chat extends AppCompatActivity {
                                 oppoChatHistory.add(messageText2);
                                 tempRef.setValue(chatHistory);
                                 tempRefOpposite.setValue(oppoChatHistory);
-                                addMessageBox("You:\n" + messageText.substring(1), 1);
+//                                addMessageBox("You:\n" + messageText.substring(1), 1);
 //
                                 messageArea.setText("");
-//                                layout.removeAllViews();
+//
                             }
                         }
                         else{
@@ -117,11 +117,10 @@ public class Chat extends AppCompatActivity {
                                 oppoChatHistory.add(messageText2);
                                 tempRef1.child(myUID).child(userID).setValue(chatHistory);
                                 tempRef1.child(userID).child(myUID).setValue(oppoChatHistory);
-                                addMessageBox("You:\n" + messageText.substring(1), 1);
+//                                addMessageBox("You:\n" + messageText.substring(1), 1);
 
 //
                                 messageArea.setText("");
-//                                layout.removeAllViews();
                             }
                         }
                     }
@@ -185,19 +184,34 @@ public class Chat extends AppCompatActivity {
                         messageRef.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                Log.d(TAG, "on Child added Value is " + dataSnapshot.getValue());
+                                Log.d(TAG, "in messageRef on Child added Value is " + dataSnapshot.getValue());
 
-                                chatHistory = new ArrayList<>();
-                                oppoChatHistory = new ArrayList<>();
+//                                chatHistory = new ArrayList<>();
+//                                oppoChatHistory = new ArrayList<>();
                                 Log.d(TAG, "snapshot key is " + dataSnapshot.getKey());
                                 if(dataSnapshot.getKey().toString().equals(userID)) {
-                                    chatHistory = (ArrayList<String>) dataSnapshot.getValue();
-                                    for (int i = 0; i < chatHistory.size(); i++) {
-                                        Log.d(TAG, "In loop");
-                                        if (chatHistory.get(i).charAt(0) == '0')
-                                            addMessageBox("You:\n" + chatHistory.get(i).substring(1), 1);
+
+                                    if(chatHistory.size() == 0) {
+                                        chatHistory = (ArrayList<String>) dataSnapshot.getValue();
+                                        Log.d(TAG, "Chat 0");
+                                        for (int i = 0; i < chatHistory.size(); i++) {
+                                            Log.d(TAG, "In loop");
+                                            if (chatHistory.get(i) == null)
+                                                continue;
+                                            if (chatHistory.get(i).charAt(0) == '0')
+                                                addMessageBox("You:\n" + chatHistory.get(i).substring(1), 1);
+                                            else
+                                                addMessageBox(oppositeEmail + ":\n" + chatHistory.get(i).substring(1), 2);
+                                        }
+                                    }
+                                    else{
+                                        Log.d(TAG, "Chat not 0");
+//                                        if (chatHistory.get(chatHistory.size() - 1) == null)
+//                                            continue;
+                                        if (chatHistory.get(chatHistory.size() - 1).charAt(0) == '0')
+                                            addMessageBox("You:\n" + chatHistory.get(chatHistory.size() - 1).substring(1), 1);
                                         else
-                                            addMessageBox(oppositeEmail + ":\n" + chatHistory.get(i).substring(1), 2);
+                                            addMessageBox(oppositeEmail + ":\n" + chatHistory.get(chatHistory.size() - 1).substring(1), 2);
                                     }
                                     scrollView.fullScroll(View.FOCUS_DOWN);
                                 }
@@ -205,18 +219,30 @@ public class Chat extends AppCompatActivity {
 
                             @Override
                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                Log.d(TAG, "on Child changed Value is " + dataSnapshot.getValue());
-                                chatHistory = new ArrayList<>();
-                                oppoChatHistory = new ArrayList<>();
+                                Log.d(TAG, "in messageRef on Child changed Value is " + dataSnapshot.getValue());
+//                                chatHistory = new ArrayList<>();
+//                                oppoChatHistory = new ArrayList<>();
                                 Log.d(TAG, "snapshot key is " + dataSnapshot.getKey());
                                 if(dataSnapshot.getKey().toString().equals(userID)) {
                                     chatHistory = (ArrayList<String>) dataSnapshot.getValue();
-                                    for (int i = 0; i < chatHistory.size(); i++) {
-                                        Log.d(TAG, "In loop");
-                                        if (chatHistory.get(i).charAt(0) == '0')
-                                            addMessageBox("You:\n" + chatHistory.get(i).substring(1), 1);
+                                    if(chatHistory.size() == 0) {
+                                        Log.d(TAG, "Chat 0");
+                                        for (int i = 0; i < chatHistory.size(); i++) {
+                                            Log.d(TAG, "In loop");
+                                            if (chatHistory.get(i) == null)
+                                                continue;
+                                            if (chatHistory.get(i).charAt(0) == '0')
+                                                addMessageBox("You:\n" + chatHistory.get(i).substring(1), 1);
+                                            else
+                                                addMessageBox(oppositeEmail + ":\n" + chatHistory.get(i).substring(1), 2);
+                                        }
+                                    }
+                                    else{
+                                        Log.d(TAG, "on child changed Chat not 0");
+                                        if (chatHistory.get(chatHistory.size() - 1).charAt(0) == '0')
+                                            addMessageBox("You:\n" + chatHistory.get(chatHistory.size() - 1).substring(1), 1);
                                         else
-                                            addMessageBox(oppositeEmail + ":\n" + chatHistory.get(i).substring(1), 2);
+                                            addMessageBox(oppositeEmail + ":\n" + chatHistory.get(chatHistory.size() - 1).substring(1), 2);
                                     }
                                     scrollView.fullScroll(View.FOCUS_DOWN);
 
