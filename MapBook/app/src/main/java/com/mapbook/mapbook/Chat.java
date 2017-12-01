@@ -89,8 +89,8 @@ public class Chat extends AppCompatActivity {
                                     getReference("Chat/" + userID + "/" + myUID);
                             if (!messageText.equals("")) {
 
-                                ArrayList<String> tempList = chatHistory;
-                                ArrayList<String> tempList2 = oppoChatHistory;
+                                ArrayList<String> tempList = chatHistory == null ? new ArrayList<String>() : chatHistory;
+                                ArrayList<String> tempList2 = oppoChatHistory  == null ? new ArrayList<String>() : oppoChatHistory;
                                 tempList.add(messageText);
                                 tempList2.add(messageText2);
                                 tempRef.setValue(tempList);
@@ -109,8 +109,8 @@ public class Chat extends AppCompatActivity {
                             String messageText2 = "1" + messageArea.getText().toString();
                             if (!messageText.equals("")) {
 
-                                ArrayList<String> tempList = chatHistory;
-                                ArrayList<String> tempList2 = oppoChatHistory;
+                                ArrayList<String> tempList = chatHistory == null ? new ArrayList<String>() : chatHistory;
+                                ArrayList<String> tempList2 = oppoChatHistory  == null ? new ArrayList<String>() : oppoChatHistory;
                                 tempList.add(messageText);
                                 tempList2.add(messageText2);
                                 tempRef1.child(myUID).child(userID).setValue(tempList);
