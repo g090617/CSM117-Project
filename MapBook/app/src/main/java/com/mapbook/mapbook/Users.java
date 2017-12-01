@@ -54,7 +54,7 @@ public class Users extends AppCompatActivity implements View.OnClickListener {
 //                Log.d(TAG, "Value is " + dataSnapshot.getValue());
 //                Log.d(TAG, "History is " + chatHist.toString());
 //                Log.d(TAG, "History is " + tempHist.keySet());
-                if (tempList != null) {
+                if (tempHist != null) {
                     userList = new ArrayList<String>(tempHist.keySet());
                     for (String uid : userList) {
                         getUserInfoByUserID(uid);
