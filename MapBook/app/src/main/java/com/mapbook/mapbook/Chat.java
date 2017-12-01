@@ -98,8 +98,6 @@ public class Chat extends AppCompatActivity {
                                 addMessageBox("You:\n" + messageText.substring(1), 1);
 //
                                 messageArea.setText("");
-                                chatHistory.clear();
-                                oppoChatHistory.clear();
                                 layout.removeAllViews();
                             }
                         }
@@ -119,8 +117,6 @@ public class Chat extends AppCompatActivity {
 
 //
                                 messageArea.setText("");
-                                chatHistory.clear();
-                                oppoChatHistory.clear();
                                 layout.removeAllViews();
                             }
                         }
