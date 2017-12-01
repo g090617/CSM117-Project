@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -66,15 +67,42 @@ public class CreateActivity extends AppCompatActivity {
             public void onClick(View view) {
 
             final EditText titleField = (EditText)findViewById(R.id.editText2);
-            String title = titleField.getText().toString().toUpperCase();
+
+            String title = titleField.getText().toString();
+            if(title.isEmpty()){
+                Toast.makeText(getApplicationContext(), "Please enter a book title", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            else{
+                title = title.toUpperCase();
+
+            }
+
             final EditText nameField = (EditText)findViewById(R.id.editText3);
             String name = nameField.getText().toString();
+            if(name.isEmpty()){
+                name = "unknown";
+            }
             final EditText isbnField = (EditText)findViewById(R.id.editText5);
             String isbn  = isbnField.getText().toString();
+            if (isbn.isEmpty()){
+                isbn = "unknown";
+            }
             final EditText pubField = (EditText)findViewById(R.id.editText6);
             String pub = pubField.getText().toString();
+                if (pub.isEmpty()){
+                    pub = "unknown";
+                }
             final EditText priceField = (EditText)findViewById(R.id.editText8);
             String price = priceField.getText().toString();
+                if(price.isEmpty()){
+                    price = "0";
+                }
+
+                if(location == null){
+                    Toast.makeText(getApplicationContext(), "Please select a location", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             final Spinner subjectSpinner = (Spinner)findViewById(R.id.spinner);
             String subject = subjectSpinner.getSelectedItem().toString();
             mAuth = FirebaseAuth.getInstance();
@@ -89,7 +117,7 @@ public class CreateActivity extends AppCompatActivity {
 
                 Snackbar.make(view, "Added to database", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-                BookInfo bookCreated = new BookInfo(null, title, name, isbn, pub, subject, price, "SELL", zip,
+                BookInfo bookCreated = new BookInfo(null, title, name, isbn, pub, subject, price, null, zip,
                     String.valueOf(location.longitude), String.valueOf(location.latitude));
 
             Intent intent = new Intent(getApplicationContext(), MainNavigation.class);
