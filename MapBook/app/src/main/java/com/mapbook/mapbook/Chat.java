@@ -187,6 +187,8 @@ public class Chat extends AppCompatActivity {
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 Log.d(TAG, "on Child added Value is " + dataSnapshot.getValue());
 
+                                chatHistory = new ArrayList<>();
+                                oppoChatHistory = new ArrayList<>();
                                 Log.d(TAG, "snapshot key is " + dataSnapshot.getKey());
                                 if(dataSnapshot.getKey().toString().equals(userID)) {
                                     chatHistory = (ArrayList<String>) dataSnapshot.getValue();
@@ -204,7 +206,8 @@ public class Chat extends AppCompatActivity {
                             @Override
                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                                 Log.d(TAG, "on Child changed Value is " + dataSnapshot.getValue());
-
+                                chatHistory = new ArrayList<>();
+                                oppoChatHistory = new ArrayList<>();
                                 Log.d(TAG, "snapshot key is " + dataSnapshot.getKey());
                                 if(dataSnapshot.getKey().toString().equals(userID)) {
                                     chatHistory = (ArrayList<String>) dataSnapshot.getValue();
@@ -216,6 +219,7 @@ public class Chat extends AppCompatActivity {
                                             addMessageBox(oppositeEmail + ":\n" + chatHistory.get(i).substring(1), 2);
                                     }
                                     scrollView.fullScroll(View.FOCUS_DOWN);
+
                                 }
                             }
 
