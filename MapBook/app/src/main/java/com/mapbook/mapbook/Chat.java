@@ -89,16 +89,18 @@ public class Chat extends AppCompatActivity {
                                     getReference("Chat/" + userID + "/" + myUID);
                             if (!messageText.equals("")) {
 
-                                ArrayList<String> tempList = chatHistory == null ? new ArrayList<String>() : chatHistory;
-                                ArrayList<String> tempList2 = oppoChatHistory  == null ? new ArrayList<String>() : oppoChatHistory;
-                                tempList.add(messageText);
-                                tempList2.add(messageText2);
-                                tempRef.setValue(tempList);
-                                tempRefOpposite.setValue(tempList2);
+//                                ArrayList<String> tempList = chatHistory == null ? new ArrayList<String>() : chatHistory;
+//                                ArrayList<String> tempList2 = oppoChatHistory  == null ? new ArrayList<String>() : oppoChatHistory;
+//                                tempList.add(messageText);
+//                                tempList2.add(messageText2);
+                                chatHistory.add(messageText);
+                                oppoChatHistory.add(messageText2);
+                                tempRef.setValue(chatHistory);
+                                tempRefOpposite.setValue(oppoChatHistory);
                                 addMessageBox("You:\n" + messageText.substring(1), 1);
 //
                                 messageArea.setText("");
-                                layout.removeAllViews();
+//                                layout.removeAllViews();
                             }
                         }
                         else{
@@ -107,17 +109,19 @@ public class Chat extends AppCompatActivity {
                             String messageText2 = "1" + messageArea.getText().toString();
                             if (!messageText.equals("")) {
 
-                                ArrayList<String> tempList = chatHistory == null ? new ArrayList<String>() : chatHistory;
-                                ArrayList<String> tempList2 = oppoChatHistory  == null ? new ArrayList<String>() : oppoChatHistory;
-                                tempList.add(messageText);
-                                tempList2.add(messageText2);
-                                tempRef1.child(myUID).child(userID).setValue(tempList);
-                                tempRef1.child(userID).child(myUID).setValue(tempList2);
+//                                ArrayList<String> tempList = chatHistory == null ? new ArrayList<String>() : chatHistory;
+//                                ArrayList<String> tempList2 = oppoChatHistory  == null ? new ArrayList<String>() : oppoChatHistory;
+//                                tempList.add(messageText);
+//                                tempList2.add(messageText2);
+                                chatHistory.add(messageText);
+                                oppoChatHistory.add(messageText2);
+                                tempRef1.child(myUID).child(userID).setValue(chatHistory);
+                                tempRef1.child(userID).child(myUID).setValue(oppoChatHistory);
                                 addMessageBox("You:\n" + messageText.substring(1), 1);
 
 //
                                 messageArea.setText("");
-                                layout.removeAllViews();
+//                                layout.removeAllViews();
                             }
                         }
                     }
