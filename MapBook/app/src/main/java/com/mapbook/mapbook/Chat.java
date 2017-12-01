@@ -44,8 +44,8 @@ public class Chat extends AppCompatActivity {
     DatabaseReference messageRef;
     DatabaseReference messageRefOpposite;
     User chatTo;
-    ArrayList<String> chatHistory;
-    ArrayList<String> oppoChatHistory;
+    ArrayList<String> chatHistory = new ArrayList<>();
+    ArrayList<String> oppoChatHistory = new ArrayList<>();
     String myUID;
     String oppositeEmail;
 
