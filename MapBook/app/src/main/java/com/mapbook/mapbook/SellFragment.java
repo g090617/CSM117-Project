@@ -104,12 +104,13 @@ public void getBookInfoByBookID(String bookID){
                     "Publisher: " + value.publisher + "\n" +
                     "Zip code : " + value.zipCode+"\n" +
                     "Status : " + value.status);
-//           if(value.status.equals("SOLD")) {
+           if(!value.status.equals("BUY")) {
 
                books.add(value.title);
                status.add(value.status);
                id.add(value.bookID);
                bookInfoHashMap.put(value.title, value);
+           }
             // place reserved book in list with button
 //            List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
 //            Log.d(TAG, "res books SIZE " + books.size()+"\n");

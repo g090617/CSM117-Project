@@ -97,21 +97,21 @@ public void getBookInfoByBookID(String bookID){
                     "Zip code : " + value.zipCode);
             if(value.status.equals("BUY")){
                 books.add(value.title);
-                status.add(value.status);
+                status.add(value.price);
                 bookInfoHashMap.put(value.title, value);
             }
 
-//            List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
-//            for(int i =0 ; i<books.size();i++){
-//                Map<String,Object> listItem = new HashMap<String, Object>();
-//                listItem.put("books", books.get(i));
-//                listItem.put("status",status.get(i));
-//                list.add(listItem);
-//            }
-//            SimpleAdapter adapter = new SimpleAdapter(getActivity(),list,
-//                    R.layout.view_list_item,  new String[] { "books","status"},
-//                    new int[] { R.id.booktitle, R.id.bookstatus });
-//            setListAdapter(adapter);
+            List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
+            for(int i =0 ; i<books.size();i++){
+                Map<String,Object> listItem = new HashMap<String, Object>();
+                listItem.put("books", books.get(i));
+                listItem.put("status",status.get(i));
+                list.add(listItem);
+            }
+            SimpleAdapter adapter = new SimpleAdapter(getActivity(),list,
+                    R.layout.view_list_item_no_button,  new String[] { "books","status"},
+                    new int[] { R.id.booktitle, R.id.bookstatus });
+            setListAdapter(adapter);
         }
 
         @Override

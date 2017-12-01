@@ -2,6 +2,7 @@ package com.mapbook.mapbook;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.app.DownloadManager;
 import android.os.Bundle;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -32,12 +33,15 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
     private BookInfo bookCreated;
     private String zipCode;
     private String status;
+    private String booktitle;
+    private String bookprice;
     private String sellerMail;
     private String userID;
     private String bookID;
     private String markerID;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+    private RequestAccess requestAccessDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,8 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_book_info);
         TextView lblTitle=(TextView)findViewById(R.id.lblTitle);
         Intent intent = getIntent();
+        booktitle=intent.getStringExtra("title");
+        bookprice = intent.getStringExtra("price");
         zipCode = intent.getStringExtra("zipCode");
         markerID = intent.getStringExtra("markerId");
         bookID = intent.getStringExtra("bookID");
@@ -83,6 +89,11 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
             Log.w(TAG, "bookID of the book is" + bookID);
             if(changeStatus(bookID, "RESERVED")) {
                 display = "The status of the book has been changed";
+                requestAccessDB = new RequestAccess();
+                requestAccessDB.addBookToUser(mAuth.getCurrentUser().getUid(), mAuth.getCurrentUser().getUid(),
+                        booktitle, "a", "isbn", "pub","sub",bookprice,"BUY","zip",
+                        "long", "lat");
+
             } else {
                 display = "The status of the book has not been changed";
             }
