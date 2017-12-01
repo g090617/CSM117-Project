@@ -47,17 +47,21 @@ public class BookInfo implements Parcelable {
     }
 
     public BookInfo(Parcel in) {
-        String[] data = new String[9];
+        String[] data = new String[11];
         in.readStringArray(data);
-        this.title = data[0];
-        this.author = data[1];
-        this.isbn = data[2];
-        this.publisher = data[3];
-        this.subject = data[4];
-        this.price = data[5];
-        this.zipCode = data[6];
-        this.longtitude = data[7];
-        this.latitude = data[8];
+
+        this.bookID = data[0];
+        this.title = data[1];
+        this.author = data[2];
+        this.isbn = data[3];
+        this.publisher = data[4];
+        this.subject = data[5];
+        this.price = data[6];
+
+        this.status = data[7];
+        this.zipCode = data[8];
+        this.longtitude = data[9];
+        this.latitude = data[10];
     }
 
     @Override
@@ -67,8 +71,8 @@ public class BookInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{ this.title, this.author, this.isbn,
-                this.publisher, this.subject, this.price, this.zipCode, this.longtitude, this.latitude});
+        dest.writeStringArray(new String[]{ this.bookID, this.title, this.author, this.isbn,
+                this.publisher, this.subject, this.price, this.status, this.zipCode, this.longtitude, this.latitude});
     }
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
       public BookInfo createFromParcel(Parcel in){

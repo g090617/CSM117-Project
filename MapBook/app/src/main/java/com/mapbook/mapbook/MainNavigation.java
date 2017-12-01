@@ -191,7 +191,29 @@ public class MainNavigation extends AppCompatActivity
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             bookCreated = intent.getExtras().getParcelable("bookCreated");
-            if (bookCreated != null && bookCreated.status.toUpperCase() == "SELL") {
+            if(bookCreated != null ){
+                Log.w(TAG, "book is not null");
+                if(bookCreated.status != null){
+                    Log.w(TAG, bookCreated.status);
+                } else {
+                    Log.w(TAG, "book created status is null");
+                }
+                if(bookCreated.bookID != null){
+                    Log.w(TAG, bookCreated.bookID);
+                } else {
+                    Log.w(TAG, "book created bookID is null");
+                }
+                if(bookCreated.price != null){
+                    Log.w(TAG, bookCreated.price);
+                } else {
+                    Log.w(TAG, "book created price is null");
+                }
+
+            } else
+
+                Log.w(TAG, "book created is null");
+
+            if (bookCreated != null && bookCreated.status.toUpperCase().equals( "SELL") ){
                 LatLng latLng = new LatLng(Double.parseDouble(bookCreated.latitude), Double.parseDouble(bookCreated.longtitude));
                 Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title("click here to check book information"));
                 mMap.setOnInfoWindowClickListener(this);
