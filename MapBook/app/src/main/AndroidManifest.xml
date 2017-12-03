@@ -11,12 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -32,21 +34,28 @@
 
         <activity
             android:name=".CreateActivity"
-            android:label="Create Sale"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SignUpActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+             />
+        <activity android:name=".SignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".MainNavigation"
-            android:label="@string/title_activity_main_navigation"
+            android:label="MapBook"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".SearchActivity"
+            android:label="Search"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ViewSaleActivity"
-            android:label="@string/title_activity_view_sale" />
-        <activity android:name=".Chat" />
-        <activity android:name=".Users" />
-        <activity android:name=".AboutActivity" />
-        <activity android:name=".DetailedBookInfoActivity"></activity>
+            android:label="My Sales" />
+        <activity android:name=".Chat"
+            android:label="Chat"/>
+        <activity android:name=".Users"
+            android:label="Contact"/>
+        <activity android:name=".AboutActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".DetailedBookInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
