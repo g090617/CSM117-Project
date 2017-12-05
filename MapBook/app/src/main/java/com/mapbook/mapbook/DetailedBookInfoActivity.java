@@ -49,6 +49,7 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_book_info);
         TextView lblTitle=(TextView)findViewById(R.id.lblTitle);
         TextView bigbooktitle=(TextView)findViewById(R.id.bigbooktitle);
+
         Intent intent = getIntent();
         booktitle=intent.getStringExtra("title");
         bookprice = intent.getStringExtra("price");
@@ -66,6 +67,7 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
 
         lblTitle.setText(display);
         bigbooktitle.setText(booktitle);
+        lblTitle.setTextSize(20);
         getUserIDByBookID(bookID);
 
     }
