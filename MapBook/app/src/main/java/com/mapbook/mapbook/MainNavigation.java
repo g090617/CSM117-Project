@@ -379,11 +379,11 @@ public class MainNavigation extends AppCompatActivity
         BookInfo bookInfo = markerBookInfoHashMap.get(marker);
         if(bookInfo != null){
             Toast.makeText(this,
-                    "        Title: " + bookInfo.title + "\n" +
-                            "        Author: " + bookInfo.author + "\n" +
-                            "        ISBN: " + bookInfo.isbn + "\n" +
-                            "        Subject: " + bookInfo.subject + "\n" +
-                            "        Price: " + bookInfo.price + "\n"+
+                    "Title: " + bookInfo.title + "\n" +
+                            "Author: " + bookInfo.author + "\n" +
+                            "ISBN: " + bookInfo.isbn + "\n" +
+                            "Subject: " + bookInfo.subject + "\n" +
+                            "Price: " + bookInfo.price + "\n"+
                     "click longer on the windows to get more information of this book",
                     Toast.LENGTH_LONG).show();
         }
