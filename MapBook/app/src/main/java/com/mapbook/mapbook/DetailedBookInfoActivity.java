@@ -48,6 +48,8 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_detailed_book_info);
         TextView lblTitle=(TextView)findViewById(R.id.lblTitle);
+        TextView bigbooktitle=(TextView)findViewById(R.id.bigbooktitle);
+
         Intent intent = getIntent();
         booktitle=intent.getStringExtra("title");
         bookprice = intent.getStringExtra("price");
@@ -56,6 +58,9 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
         bookID = intent.getStringExtra("bookID");
         // TO-DO
         sellerMail = "2@qq.com";
+        String bookTitleDisplay = intent.getStringExtra("title");
+        bigbooktitle.setTextSize(20);
+        bigbooktitle.setText(bookTitleDisplay);
         String display = "        Title: " + intent.getStringExtra("title") + "\n" +
                 "        Author: " + intent.getStringExtra("author") + "\n" +
                 "        ISBN: " + intent.getStringExtra("isbn")  + "\n" +
@@ -63,6 +68,7 @@ public class DetailedBookInfoActivity extends AppCompatActivity {
                 "        Price: " + intent.getStringExtra("price")  ;
 
         lblTitle.setText(display);
+        lblTitle.setTextSize(20);
         getUserIDByBookID(bookID);
 
     }

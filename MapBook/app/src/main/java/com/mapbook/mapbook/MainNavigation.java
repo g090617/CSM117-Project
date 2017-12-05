@@ -383,8 +383,9 @@ public class MainNavigation extends AppCompatActivity
                             "        Author: " + bookInfo.author + "\n" +
                             "        ISBN: " + bookInfo.isbn + "\n" +
                             "        Subject: " + bookInfo.subject + "\n" +
-                            "        Price: " + bookInfo.price + "\n"+
-                    "click longer on the windows to get more information of this book",
+                            "        Price: " + bookInfo.price + "\n"+ "\n" +
+                    "        click longer on the windows to" + "\n" +
+                            "        get more information of this book\n" + "\n",
                     Toast.LENGTH_LONG).show();
         }
 
