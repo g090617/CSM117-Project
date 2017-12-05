@@ -121,6 +121,7 @@ public class Chat extends AppCompatActivity {
 
 //
                                 messageArea.setText("");
+                                recreate();
                             }
                         }
                     }
@@ -136,6 +137,10 @@ public class Chat extends AppCompatActivity {
         });
 
         final DatabaseReference tempRef = FirebaseDatabase.getInstance().getReference("Chat/");
+//        if(tempRef.getKey() == null){
+//            Log.d(TAG, "tempRef key not exist");
+//        }
+
         tempRef.child(myUID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
