@@ -52,6 +52,7 @@ public class CreateActivity extends AppCompatActivity {
                 zip = state_zip.replaceAll("[^-?0-9]+", "");
                 Log.i(TAG, "Place: " + String.valueOf( location.longitude) +"and " + String.valueOf(location.latitude));
                 Log.i(TAG, "ZIP: " + zip);
+                Log.i(TAG, "Address: " + address);
             }
 
             @Override

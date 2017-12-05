@@ -17,22 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/editSubject"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:entries="@array/categories_array"
-        android:hint="Subject"
-        android:inputType="textPersonName"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-       />
 
     <EditText
         android:id="@+id/editTitle"
@@ -43,29 +27,12 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editSubject"
-         />
-
-    <EditText
-        android:id="@+id/editIsbn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="ISBN"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTitle"
-
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <EditText
         android:id="@+id/editZipcode"
@@ -78,7 +45,7 @@
         android:inputType="textPersonName"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editIsbn" />
+        app:layout_constraintTop_toBottomOf="@+id/editTitle" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
